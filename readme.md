@@ -61,4 +61,4 @@ Omicron is provided under the [MIT License](./license.md).
 
 ---
 
-Copyright &copy; 2017 Benjamin M. Crist
+Copyright &copy; 2017 PerBlue Entertainment, Inc., Benjamin M. Crist
