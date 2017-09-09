@@ -9,7 +9,8 @@ namespace o {
 
 //////////////////////////////////////////////////////////////////////////////
 SplashScene::SplashScene()
-   : curtain_opacity_(1.f) {
+   : curtain_opacity_(1.f),
+     curtain_speed_(initial_curtain_speed_) {
    change_state_(state::fade_in);
 }
 
@@ -17,6 +18,7 @@ SplashScene::SplashScene()
 void SplashScene::key_up(I16 key) {
    if (state_ != state::fade_out) {
       change_state_(state::fade_out);
+      curtain_speed_ = fast_curtain_speed_;
    }
 }
 
@@ -24,6 +26,7 @@ void SplashScene::key_up(I16 key) {
 void SplashScene::mouse_up(I8 btn) {
    if (state_ != state::fade_out) {
       change_state_(state::fade_out);
+      curtain_speed_ = fast_curtain_speed_;
    }
 }
 

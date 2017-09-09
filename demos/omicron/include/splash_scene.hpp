@@ -44,8 +44,10 @@ private:
 
    F32 last_curtain_opacity_;
    F32 curtain_opacity_;
+   F32 curtain_speed_;
 
-   static constexpr F64 curtain_speed_ = 1.0;
+   static constexpr F32 initial_curtain_speed_ = 1.f;
+   static constexpr F32 fast_curtain_speed_ = 2.f;
    static constexpr F64 wait_duration_ = 1.5;
 };
 

@@ -42,7 +42,15 @@ Game& Game::operator()(int argc, char** argv) {
       auto ptr = stbi_load_from_memory(data.get(), ( int ) data.size(), &w, &h, &comp, 0);
       if (ptr) {
          Buf<const UC> buf(ptr, (std::size_t)(w * h * comp), stbi_delete);
-         tm.add(Id(p.stem().generic_string()), Texture(buf, ivec2(w, h), comp));
+         Id id(p.stem().generic_string());
+         tm.add(id, Texture(buf, ivec2(w, h), comp));
+
+         be_verbose() << "Loaded Texture"
+            & attr(ids::log_attr_path) << p.string()
+            & attr(ids::log_attr_id) << id
+            & attr("Dimensions") << w << "x" << h
+            | default_log();
+
       } else {
          be_warn() << "Failed to load texture!"
             & attr(ids::log_attr_path) << p.string()
@@ -120,7 +128,7 @@ Scene* Game::scene() {
 
 //////////////////////////////////////////////////////////////////////////////
 void Game::scene(std::unique_ptr<Scene> s) {
-   be_info() << "Scene Change"
+   be_verbose() << "Scene Change"
       & attr(ids::log_attr_name) << s->name()
       | default_log();
 
