@@ -1,4 +1,4 @@
-#!!--[[ bengine build script ]] include('build/configure', 'vc_win', 'debug') !! 1934 ##
+#!!--[[ bengine build script ]] include('build/configure', 'vc_win', 'debug') !! 1946 ##
 # ################# !! GENERATED CODE -- DO NOT MODIFY !! ################# ##
 ninja_required_version = 1.7
 
@@ -148,6 +148,7 @@ build $ext_lib_dir: mkdir
 build $ext_include_dir\glm: lndir dep_modules\glm\glm | $ext_include_dir
 build $ext_include_dir\gsl: lndir dep_modules\gsl\gsl | $ext_include_dir
 build $ext_include_dir\glfw: lndir dep_modules\glfw\include\GLFW | $ext_include_dir
+build $ext_include_dir\GL: lndir dep_modules\glew\include\GL | $ext_include_dir
 build $ext_include_dir\pugixml: lndir dep_modules\pugixml\src | $ext_include_dir
 build $ext_include_dir\catch: lndir dep_modules\catch\single_include | $ext_include_dir
 build $ext_include_dir\lua: lndir dep_modules\lua | $ext_include_dir
@@ -169,7 +170,7 @@ build $build_dir\.boost_log: build_boost
 build %BOOST_HOME%\boost: phony || $build_dir\.boost_log
 build $ext_include_dir\boost: lndir %BOOST_HOME%\boost | $ext_include_dir
 
-build $build_dir\.i9d: putfile || $out_dir $include_dir $stage_dir $bin_dir $deps_dir $ext_include_dir $ext_lib_dir $ext_include_dir\glm $ext_include_dir\gsl $ext_include_dir\glfw $ext_include_dir\pugixml $ext_include_dir\catch $ext_include_dir\lua $ext_include_dir\stb $ext_include_dir\zlib $include_dir\be init_include_links! $ext_include_dir\boost
+build $build_dir\.i9d: putfile || $out_dir $include_dir $stage_dir $bin_dir $deps_dir $ext_include_dir $ext_lib_dir $ext_include_dir\glm $ext_include_dir\gsl $ext_include_dir\glfw $ext_include_dir\GL $ext_include_dir\pugixml $ext_include_dir\catch $ext_include_dir\lua $ext_include_dir\stb $ext_include_dir\zlib $include_dir\be init_include_links! $ext_include_dir\boost
    contents = .
 build init!: phony $build_dir\.i9d
 
@@ -272,75 +273,86 @@ build $ext_lib_dir\zlib-static-debug.lib: lib $build_dir\debug\zlib-static\adler
 build project-zlib-static-debug!: phony $ext_lib_dir\zlib-static-debug.lib
 build project-zlib-static!: phony project-zlib-static-debug!
 
+build $build_dir\debug\glew\src\glew.obj: cl dep_modules\glew\src\glew.c || init!
+   flags = $cl_flags_c_extlib_debug
+   pdb = $build_dir\glew-debug.pdb
+   extra = /DGLEW_NO_GLU /DGLEW_STATIC /I"dep_modules\glew\include" /I"include"
+
+build $ext_lib_dir\glew-debug.lib: lib $build_dir\debug\glew\src\glew.obj || init!
+   out_file = glew-debug.lib
+   flags = $lib_flags_extlib_debug
+build project-glew-debug!: phony $ext_lib_dir\glew-debug.lib
+build project-glew!: phony project-glew-debug!
+
 build $build_dir\debug\glfw\src\context.obj: cl dep_modules\glfw\src\context.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\init.obj: cl dep_modules\glfw\src\init.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\input.obj: cl dep_modules\glfw\src\input.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\monitor.obj: cl dep_modules\glfw\src\monitor.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\vulkan.obj: cl dep_modules\glfw\src\vulkan.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\window.obj: cl dep_modules\glfw\src\window.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\egl_context.obj: cl dep_modules\glfw\src\egl_context.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\wgl_context.obj: cl dep_modules\glfw\src\wgl_context.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_init.obj: cl dep_modules\glfw\src\win32_init.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_joystick.obj: cl dep_modules\glfw\src\win32_joystick.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_monitor.obj: cl dep_modules\glfw\src\win32_monitor.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_time.obj: cl dep_modules\glfw\src\win32_time.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_tls.obj: cl dep_modules\glfw\src\win32_tls.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $build_dir\debug\glfw\src\win32_window.obj: cl dep_modules\glfw\src\win32_window.c || init!
    flags = $cl_flags_c_extlib_debug
    pdb = $build_dir\glfw-debug.pdb
-   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include"
+   extra = /D_GLFW_WIN32 /I"dep_modules\glfw\include" /I"include"
 
 build $ext_lib_dir\glfw-debug.lib: lib $build_dir\debug\glfw\src\context.obj $build_dir\debug\glfw\src\init.obj $build_dir\debug\glfw\src\input.obj $build_dir\debug\glfw\src\monitor.obj $build_dir\debug\glfw\src\vulkan.obj $build_dir\debug\glfw\src\window.obj $build_dir\debug\glfw\src\egl_context.obj $build_dir\debug\glfw\src\wgl_context.obj $build_dir\debug\glfw\src\win32_init.obj $build_dir\debug\glfw\src\win32_joystick.obj $build_dir\debug\glfw\src\win32_monitor.obj $build_dir\debug\glfw\src\win32_time.obj $build_dir\debug\glfw\src\win32_tls.obj $build_dir\debug\glfw\src\win32_window.obj || init!
    out_file = glfw-debug.lib
@@ -489,8 +501,8 @@ build $ext_lib_dir\luaxx-debug.lib: lib $build_dir\debug\luaxx\lapi.obj $build_d
    flags = $lib_flags_extlib_debug
 build project-luaxx-debug!: phony $ext_lib_dir\luaxx-debug.lib
 build project-luaxx!: phony project-luaxx-debug!
-build group-deps-debug!: phony project-zlib-static-debug! project-glfw-debug! project-luaxx-debug!
-build group-deps!: phony project-zlib-static! project-glfw! project-luaxx!
+build group-deps-debug!: phony project-zlib-static-debug! project-glew-debug! project-glfw-debug! project-luaxx-debug!
+build group-deps!: phony project-zlib-static! project-glew! project-glfw! project-luaxx!
 build modules\belua\include\result_code.hpp: limp
 build modules\belua\include\result_code.hpp!: limpin modules\belua\include\result_code.hpp
 build modules\belua\include\version.hpp: limp
@@ -501,32 +513,32 @@ build modules\belua\src\result_code.cpp!: limpin modules\belua\src\result_code.c
 build $build_dir\debug\belua\src\context.obj: cl modules\belua\src\context.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $build_dir\debug\belua\src\log_exception.obj: cl modules\belua\src\log_exception.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $build_dir\debug\belua\src\lua_error.obj: cl modules\belua\src\lua_error.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $build_dir\debug\belua\src\lua_helpers.obj: cl modules\belua\src\lua_helpers.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $build_dir\debug\belua\src\open_module.obj: cl modules\belua\src\open_module.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $build_dir\debug\belua\src\result_code.obj: cl modules\belua\src\result_code.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\belua-debug.pdb
-   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"modules\belua\include"
+   extra = /DBE_BELUA_IMPL /DBE_TARGET=belua /DBE_TARGET_BASE=belua /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\belua\include"
 
 build $out_dir\belua-debug.lib: lib $build_dir\debug\belua\src\context.obj $build_dir\debug\belua\src\log_exception.obj $build_dir\debug\belua\src\lua_error.obj $build_dir\debug\belua\src\lua_helpers.obj $build_dir\debug\belua\src\open_module.obj $build_dir\debug\belua\src\result_code.obj || init!
    out_file = belua-debug.lib
@@ -544,33 +556,33 @@ build modules\blt\src\lexer.cpp: ragel modules\blt\meta\lexer.rl
 build $build_dir\debug\blt\src\pch.obj: cl modules\blt\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yc"pch.hpp"
 build $build_dir\blt-debug.pch: phony $build_dir\debug\blt\src\pch.obj
 
 build $build_dir\debug\blt\src\blt.obj: cl modules\blt\src\blt.cpp | $build_dir\blt-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\blt\src\lexer.obj: cl modules\blt\src\lexer.cpp | $build_dir\blt-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\blt\src\parser.obj: cl modules\blt\src\parser.cpp | $build_dir\blt-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\blt\src\token_data.obj: cl modules\blt\src\token_data.cpp | $build_dir\blt-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\blt\src\token_type.obj: cl modules\blt\src\token_type.cpp | $build_dir\blt-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-debug.pdb
-   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_BLT_IMPL /DBE_TARGET=blt /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include" /Fp"$build_dir\blt-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\blt-debug.lib: lib $build_dir\debug\blt\src\pch.obj $build_dir\debug\blt\src\blt.obj $build_dir\debug\blt\src\lexer.obj $build_dir\debug\blt\src\parser.obj $build_dir\debug\blt\src\token_data.obj $build_dir\debug\blt\src\token_type.obj || init!
    out_file = blt-debug.lib
@@ -583,12 +595,12 @@ build modules\blt\src-lua\lua_blt.cpp!: limpin modules\blt\src-lua\lua_blt.cpp
 build $build_dir\debug\blt-lua\src-lua\lua_blt.obj: cl modules\blt\src-lua\lua_blt.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-lua-debug.pdb
-   extra = /DBE_BLT_LUA_IMPL /DBE_TARGET=blt-lua /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include"
+   extra = /DBE_BLT_LUA_IMPL /DBE_TARGET=blt-lua /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include"
 
 build $build_dir\debug\blt-lua\src-lua\lua_blt_debug.obj: cl modules\blt\src-lua\lua_blt_debug.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\blt-lua-debug.pdb
-   extra = /DBE_BLT_LUA_IMPL /DBE_TARGET=blt-lua /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"modules\blt\include"
+   extra = /DBE_BLT_LUA_IMPL /DBE_TARGET=blt-lua /DBE_TARGET_BASE=blt /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\blt\include"
 
 build $out_dir\blt-lua-debug.lib: lib $build_dir\debug\blt-lua\src-lua\lua_blt.obj $build_dir\debug\blt-lua\src-lua\lua_blt_debug.obj || init!
    out_file = blt-lua-debug.lib
@@ -605,63 +617,63 @@ build modules\cli\include\version.hpp!: limpin modules\cli\include\version.hpp
 build $build_dir\debug\cli\src\pch.obj: cl modules\cli\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yc"pch.hpp"
 build $build_dir\cli-debug.pch: phony $build_dir\debug\cli\src\pch.obj
 
 build $build_dir\debug\cli\src\app_name.obj: cl modules\cli\src\app_name.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\argument_error.obj: cl modules\cli\src\argument_error.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\default_option_parser.obj: cl modules\cli\src\default_option_parser.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\describe_config.obj: cl modules\cli\src\describe_config.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\handler_context.obj: cl modules\cli\src\handler_context.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\ids.obj: cl modules\cli\src\ids.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\log_exception.obj: cl modules\cli\src\log_exception.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\option_error.obj: cl modules\cli\src\option_error.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\processor.obj: cl modules\cli\src\processor.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\verbosity_param.obj: cl modules\cli\src\verbosity_param.cpp | $build_dir\cli-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include" /Fp"$build_dir\cli-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\cli\src\native\vc_win\escape_cli_arg.obj: cl modules\cli\src\native\vc_win\escape_cli_arg.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\cli-debug.pdb
-   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"modules\cli\include"
+   extra = /DBE_CLI_IMPL /DBE_TARGET=cli /DBE_TARGET_BASE=cli /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\cli\include"
 
 build $out_dir\cli-debug.lib: lib $build_dir\debug\cli\src\pch.obj $build_dir\debug\cli\src\app_name.obj $build_dir\debug\cli\src\argument_error.obj $build_dir\debug\cli\src\default_option_parser.obj $build_dir\debug\cli\src\describe_config.obj $build_dir\debug\cli\src\handler_context.obj $build_dir\debug\cli\src\ids.obj $build_dir\debug\cli\src\log_exception.obj $build_dir\debug\cli\src\option_error.obj $build_dir\debug\cli\src\processor.obj $build_dir\debug\cli\src\verbosity_param.obj $build_dir\debug\cli\src\native\vc_win\escape_cli_arg.obj || init!
    out_file = cli-debug.lib
@@ -680,163 +692,163 @@ build modules\core\include\version.hpp!: limpin modules\core\include\version.hpp
 build $build_dir\debug\core\src\pch.obj: cl modules\core\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yc"pch.hpp"
 build $build_dir\core-debug.pch: phony $build_dir\debug\core\src\pch.obj
 
 build $build_dir\debug\core\src\a3_vmm_alloc.obj: cl modules\core\src\a3_vmm_alloc.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\alg.obj: cl modules\core\src\alg.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\console_color.obj: cl modules\core\src\console_color.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\console_indent.obj: cl modules\core\src\console_indent.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\console_log_sink.obj: cl modules\core\src\console_log_sink.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\default_log.obj: cl modules\core\src\default_log.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\exceptions.obj: cl modules\core\src\exceptions.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\filesystem.obj: cl modules\core\src\filesystem.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\id_collision_handler.obj: cl modules\core\src\id_collision_handler.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\ids.obj: cl modules\core\src\ids.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\io_service_thread_pool.obj: cl modules\core\src\io_service_thread_pool.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\lifecycle.obj: cl modules\core\src\lifecycle.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\log.obj: cl modules\core\src\log.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\log_exception.obj: cl modules\core\src\log_exception.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\log_expr_ops.obj: cl modules\core\src\log_expr_ops.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\log_processor.obj: cl modules\core\src\log_processor.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\service_io_service.obj: cl modules\core\src\service_io_service.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\service_io_service_thread_pool.obj: cl modules\core\src\service_io_service_thread_pool.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\service_simple_single_thread_executor.obj: cl modules\core\src\service_simple_single_thread_executor.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\stack_trace.obj: cl modules\core\src\stack_trace.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\time.obj: cl modules\core\src\time.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\void_log.obj: cl modules\core\src\void_log.cpp | $build_dir\core-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include" /Fp"$build_dir\core-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\core\src\native\vc_win\builtins.obj: cl modules\core\src\native\vc_win\builtins.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\console.obj: cl modules\core\src\native\vc_win\console.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\console_color.obj: cl modules\core\src\native\vc_win\console_color.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\lifecycle.obj: cl modules\core\src\native\vc_win\lifecycle.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\memory.obj: cl modules\core\src\native\vc_win\memory.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\memory_status.obj: cl modules\core\src\native\vc_win\memory_status.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\native.obj: cl modules\core\src\native\vc_win\native.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\stack_trace.obj: cl modules\core\src\native\vc_win\stack_trace.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core\src\native\vc_win\time.obj: cl modules\core\src\native\vc_win\time.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-debug.pdb
-   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_IMPL /DBE_TARGET=core /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $out_dir\core-debug.lib: lib $build_dir\debug\core\src\pch.obj $build_dir\debug\core\src\a3_vmm_alloc.obj $build_dir\debug\core\src\alg.obj $build_dir\debug\core\src\console_color.obj $build_dir\debug\core\src\console_indent.obj $build_dir\debug\core\src\console_log_sink.obj $build_dir\debug\core\src\default_log.obj $build_dir\debug\core\src\exceptions.obj $build_dir\debug\core\src\filesystem.obj $build_dir\debug\core\src\id_collision_handler.obj $build_dir\debug\core\src\ids.obj $build_dir\debug\core\src\io_service_thread_pool.obj $build_dir\debug\core\src\lifecycle.obj $build_dir\debug\core\src\log.obj $build_dir\debug\core\src\log_exception.obj $build_dir\debug\core\src\log_expr_ops.obj $build_dir\debug\core\src\log_processor.obj $build_dir\debug\core\src\service_io_service.obj $build_dir\debug\core\src\service_io_service_thread_pool.obj $build_dir\debug\core\src\service_simple_single_thread_executor.obj $build_dir\debug\core\src\stack_trace.obj $build_dir\debug\core\src\time.obj $build_dir\debug\core\src\void_log.obj $build_dir\debug\core\src\native\vc_win\builtins.obj $build_dir\debug\core\src\native\vc_win\console.obj $build_dir\debug\core\src\native\vc_win\console_color.obj $build_dir\debug\core\src\native\vc_win\lifecycle.obj $build_dir\debug\core\src\native\vc_win\memory.obj $build_dir\debug\core\src\native\vc_win\memory_status.obj $build_dir\debug\core\src\native\vc_win\native.obj $build_dir\debug\core\src\native\vc_win\stack_trace.obj $build_dir\debug\core\src\native\vc_win\time.obj || init!
    out_file = core-debug.lib
@@ -847,12 +859,12 @@ build project-core!: phony project-core-debug!
 build $build_dir\debug\core-id\src\id.obj: cl modules\core\src\id.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-id-debug.pdb
-   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_TARGET=core-id /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_TARGET=core-id /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-id\src\namespaced_id.obj: cl modules\core\src\namespaced_id.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-id-debug.pdb
-   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_TARGET=core-id /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_TARGET=core-id /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $out_dir\core-id-debug.lib: lib $build_dir\debug\core-id\src\id.obj $build_dir\debug\core-id\src\namespaced_id.obj || init!
    out_file = core-id-debug.lib
@@ -863,12 +875,12 @@ build project-core-id!: phony project-core-id-debug!
 build $build_dir\debug\core-id-with-names\src\id.obj: cl modules\core\src\id.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-id-with-names-debug.pdb
-   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-id-with-names /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-id-with-names /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-id-with-names\src\namespaced_id.obj: cl modules\core\src\namespaced_id.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-id-with-names-debug.pdb
-   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-id-with-names /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_ID_IMPL /DBE_CORE_IMPL /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-id-with-names /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $out_dir\core-id-with-names-debug.lib: lib $build_dir\debug\core-id-with-names\src\id.obj $build_dir\debug\core-id-with-names\src\namespaced_id.obj || init!
    out_file = core-id-with-names-debug.lib
@@ -879,17 +891,17 @@ build project-core-id-with-names!: phony project-core-id-with-names-debug!
 build $build_dir\debug\core-lua\src-lua\lua_id.obj: cl modules\core\src-lua\lua_id.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-lua-debug.pdb
-   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-lua\src-lua\lua_logging.obj: cl modules\core\src-lua\lua_logging.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-lua-debug.pdb
-   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-lua\src-lua\lua_time.obj: cl modules\core\src-lua\lua_time.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\core-lua-debug.pdb
-   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_CORE_LUA_IMPL /DBE_TARGET=core-lua /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $out_dir\core-lua-debug.lib: lib $build_dir\debug\core-lua\src-lua\lua_id.obj $build_dir\debug\core-lua\src-lua\lua_logging.obj $build_dir\debug\core-lua\src-lua\lua_time.obj || init!
    out_file = core-lua-debug.lib
@@ -900,67 +912,67 @@ build project-core-lua!: phony project-core-lua-debug!
 build $build_dir\debug\core-test\test\test_a3_aligned_malloc_alloc.obj: cl modules\core\test\test_a3_aligned_malloc_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_a3_buf_alloc.obj: cl modules\core\test\test_a3_buf_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_a3_malloc_alloc.obj: cl modules\core\test\test_a3_malloc_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_a3_null_alloc.obj: cl modules\core\test\test_a3_null_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_a3_static_alloc.obj: cl modules\core\test\test_a3_static_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_a3_vmm_alloc.obj: cl modules\core\test\test_a3_vmm_alloc.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_buf.obj: cl modules\core\test\test_buf.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_inline_executors.obj: cl modules\core\test\test_inline_executors.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_main.obj: cl modules\core\test\test_main.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_single_thread_executors.obj: cl modules\core\test\test_single_thread_executors.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_stack_trace.obj: cl modules\core\test\test_stack_trace.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\test_thread_pool_executors.obj: cl modules\core\test\test_thread_pool_executors.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-test\test\version.obj: cl modules\core\test\version.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\core-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-test /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\core-test-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1001,17 +1013,17 @@ build project-core-test!: phony project-core-test-debug!
 build $build_dir\debug\core-perf\perf\perf_logging.obj: cl modules\core\perf\perf_logging.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\core-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-perf\perf\perf_main.obj: cl modules\core\perf\perf_main.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\core-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\debug\core-perf\perf\version.obj: cl modules\core\perf\version.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\core-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"modules\core\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=core-perf /DBE_TARGET_BASE=core /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\core\include"
 
 build $build_dir\core-perf-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1039,68 +1051,68 @@ build modules\ctable\include\version.hpp!: limpin modules\ctable\include\version
 build $build_dir\debug\ctable\src\pch.obj: cl modules\ctable\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yc"pch.hpp"
 build $build_dir\ctable-debug.pch: phony $build_dir\debug\ctable\src\pch.obj
 
 build $build_dir\debug\ctable\src\border_config.obj: cl modules\ctable\src\border_config.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\box_config.obj: cl modules\ctable\src\box_config.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\cell.obj: cl modules\ctable\src\cell.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\cell_renderer.obj: cl modules\ctable\src\cell_renderer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\column_sizer.obj: cl modules\ctable\src\column_sizer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\row.obj: cl modules\ctable\src\row.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\row_renderer.obj: cl modules\ctable\src\row_renderer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\row_sizer.obj: cl modules\ctable\src\row_sizer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\table.obj: cl modules\ctable\src\table.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\table_renderer.obj: cl modules\ctable\src\table_renderer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\table_sizer.obj: cl modules\ctable\src\table_sizer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\ctable\src\text_renderer.obj: cl modules\ctable\src\text_renderer.cpp | $build_dir\ctable-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\ctable-debug.pdb
-   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_CTABLE_IMPL /DBE_TARGET=ctable /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include" /Fp"$build_dir\ctable-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\ctable-debug.lib: lib $build_dir\debug\ctable\src\pch.obj $build_dir\debug\ctable\src\border_config.obj $build_dir\debug\ctable\src\box_config.obj $build_dir\debug\ctable\src\cell.obj $build_dir\debug\ctable\src\cell_renderer.obj $build_dir\debug\ctable\src\column_sizer.obj $build_dir\debug\ctable\src\row.obj $build_dir\debug\ctable\src\row_renderer.obj $build_dir\debug\ctable\src\row_sizer.obj $build_dir\debug\ctable\src\table.obj $build_dir\debug\ctable\src\table_renderer.obj $build_dir\debug\ctable\src\table_sizer.obj $build_dir\debug\ctable\src\text_renderer.obj || init!
    out_file = ctable-debug.lib
@@ -1111,17 +1123,17 @@ build project-ctable!: phony project-ctable-debug!
 build $build_dir\debug\ctable-test\test\test_ct_border_config.obj: cl modules\ctable\test\test_ct_border_config.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\ctable-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include"
 
 build $build_dir\debug\ctable-test\test\test_main.obj: cl modules\ctable\test\test_main.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\ctable-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include"
 
 build $build_dir\debug\ctable-test\test\version.obj: cl modules\ctable\test\version.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\ctable-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"modules\ctable\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=ctable-test /DBE_TARGET_BASE=ctable /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\ctable\include"
 
 build $build_dir\ctable-test-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1149,63 +1161,63 @@ build modules\perf\include\version.hpp!: limpin modules\perf\include\version.hpp
 build $build_dir\debug\perf\src\pch.obj: cl modules\perf\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yc"pch.hpp"
 build $build_dir\perf-debug.pch: phony $build_dir\debug\perf\src\pch.obj
 
 build $build_dir\debug\perf\src\counter.obj: cl modules\perf\src\counter.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\counter_stat.obj: cl modules\perf\src\counter_stat.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\counter_stats.obj: cl modules\perf\src\counter_stats.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\event.obj: cl modules\perf\src\event.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\event_stat.obj: cl modules\perf\src\event_stat.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\event_stats.obj: cl modules\perf\src\event_stats.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\service_stats.obj: cl modules\perf\src\service_stats.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\stats.obj: cl modules\perf\src\stats.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\timer.obj: cl modules\perf\src\timer.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\timer_stat.obj: cl modules\perf\src\timer_stat.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\perf\src\timer_stats.obj: cl modules\perf\src\timer_stats.cpp | $build_dir\perf-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\perf-debug.pdb
-   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PERF_IMPL /DBE_TARGET=perf /DBE_TARGET_BASE=perf /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\perf\include" /Fp"$build_dir\perf-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\perf-debug.lib: lib $build_dir\debug\perf\src\pch.obj $build_dir\debug\perf\src\counter.obj $build_dir\debug\perf\src\counter_stat.obj $build_dir\debug\perf\src\counter_stats.obj $build_dir\debug\perf\src\event.obj $build_dir\debug\perf\src\event_stat.obj $build_dir\debug\perf\src\event_stats.obj $build_dir\debug\perf\src\service_stats.obj $build_dir\debug\perf\src\stats.obj $build_dir\debug\perf\src\timer.obj $build_dir\debug\perf\src\timer_stat.obj $build_dir\debug\perf\src\timer_stats.obj || init!
    out_file = perf-debug.lib
@@ -1220,18 +1232,18 @@ build modules\platform\include\version.hpp!: limpin modules\platform\include\ver
 build $build_dir\debug\platform\src\pch.obj: cl modules\platform\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\platform-debug.pdb
-   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"modules\platform\include" /Fp"$build_dir\platform-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\platform\include" /Fp"$build_dir\platform-debug.pch" /Yc"pch.hpp"
 build $build_dir\platform-debug.pch: phony $build_dir\debug\platform\src\pch.obj
 
 build $build_dir\debug\platform\src\ids.obj: cl modules\platform\src\ids.cpp | $build_dir\platform-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\platform-debug.pdb
-   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"modules\platform\include" /Fp"$build_dir\platform-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\platform\include" /Fp"$build_dir\platform-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\platform\src\native\vc_win\lifecycle.obj: cl modules\platform\src\native\vc_win\lifecycle.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\platform-debug.pdb
-   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"modules\platform\include"
+   extra = /DBE_PLATFORM_IMPL /DBE_TARGET=platform /DBE_TARGET_BASE=platform /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\platform\include"
 
 build $out_dir\platform-debug.lib: lib $build_dir\debug\platform\src\pch.obj $build_dir\debug\platform\src\ids.obj $build_dir\debug\platform\src\native\vc_win\lifecycle.obj || init!
    out_file = platform-debug.lib
@@ -1258,83 +1270,83 @@ build modules\sqlite\src\transaction_type.cpp!: limpin modules\sqlite\src\transa
 build $build_dir\debug\sqlite\src\sqlite.obj: cl modules\sqlite\src\sqlite.c || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite\src\pch.obj: cl modules\sqlite\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yc"pch.hpp"
 build $build_dir\sqlite-debug.pch: phony $build_dir\debug\sqlite\src\pch.obj
 
 build $build_dir\debug\sqlite\src\db.obj: cl modules\sqlite\src\db.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\log_exception.obj: cl modules\sqlite\src\log_exception.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\queries.obj: cl modules\sqlite\src\queries.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\result_code.obj: cl modules\sqlite\src\result_code.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\result_type.obj: cl modules\sqlite\src\result_type.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\shared_stmt_cache.obj: cl modules\sqlite\src\shared_stmt_cache.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\sql_error.obj: cl modules\sqlite\src\sql_error.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\static_stmt_cache.obj: cl modules\sqlite\src\static_stmt_cache.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\stmt.obj: cl modules\sqlite\src\stmt.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\stmt_base.obj: cl modules\sqlite\src\stmt_base.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\stmt_cache.obj: cl modules\sqlite\src\stmt_cache.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\stmt_proxy.obj: cl modules\sqlite\src\stmt_proxy.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\transaction.obj: cl modules\sqlite\src\transaction.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\sqlite\src\transaction_type.obj: cl modules\sqlite\src\transaction_type.cpp | $build_dir\sqlite-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\sqlite-debug.pdb
-   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_SQLITE_IMPL /DBE_TARGET=sqlite /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include" /Fp"$build_dir\sqlite-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\sqlite-debug.lib: lib $build_dir\debug\sqlite\src\sqlite.obj $build_dir\debug\sqlite\src\pch.obj $build_dir\debug\sqlite\src\db.obj $build_dir\debug\sqlite\src\log_exception.obj $build_dir\debug\sqlite\src\queries.obj $build_dir\debug\sqlite\src\result_code.obj $build_dir\debug\sqlite\src\result_type.obj $build_dir\debug\sqlite\src\shared_stmt_cache.obj $build_dir\debug\sqlite\src\sql_error.obj $build_dir\debug\sqlite\src\static_stmt_cache.obj $build_dir\debug\sqlite\src\stmt.obj $build_dir\debug\sqlite\src\stmt_base.obj $build_dir\debug\sqlite\src\stmt_cache.obj $build_dir\debug\sqlite\src\stmt_proxy.obj $build_dir\debug\sqlite\src\transaction.obj $build_dir\debug\sqlite\src\transaction_type.obj || init!
    out_file = sqlite-debug.lib
@@ -1345,37 +1357,37 @@ build project-sqlite!: phony project-sqlite-debug!
 build $build_dir\debug\sqlite-test\test\test_db.obj: cl modules\sqlite\test\test_db.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\test_main.obj: cl modules\sqlite\test\test_main.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\test_shared_stmt_cache.obj: cl modules\sqlite\test\test_shared_stmt_cache.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\test_static_stmt_cache.obj: cl modules\sqlite\test\test_static_stmt_cache.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\test_stmt.obj: cl modules\sqlite\test\test_stmt.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\test_transaction.obj: cl modules\sqlite\test\test_transaction.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\debug\sqlite-test\test\version.obj: cl modules\sqlite\test\version.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\sqlite-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"modules\sqlite\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=sqlite-test /DBE_TARGET_BASE=sqlite /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\sqlite\include"
 
 build $build_dir\sqlite-test-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1403,7 +1415,7 @@ build modules\testing\include\version.hpp!: limpin modules\testing\include\versi
 build $build_dir\debug\testing\src\pch.obj: cl modules\testing\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\testing-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing /DBE_TARGET_BASE=testing /DBE_TESTING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\testing\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing /DBE_TARGET_BASE=testing /DBE_TESTING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\testing\include"
 
 build $out_dir\testing-debug.lib: lib $build_dir\debug\testing\src\pch.obj || init!
    out_file = testing-debug.lib
@@ -1414,17 +1426,17 @@ build project-testing!: phony project-testing-debug!
 build $build_dir\debug\testing-test\test\test_arbitrary.obj: cl modules\testing\test\test_arbitrary.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\testing-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"modules\testing\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\testing\include"
 
 build $build_dir\debug\testing-test\test\test_main.obj: cl modules\testing\test\test_main.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\testing-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"modules\testing\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\testing\include"
 
 build $build_dir\debug\testing-test\test\version.obj: cl modules\testing\test\version.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\testing-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"modules\testing\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=testing-test /DBE_TARGET_BASE=testing /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\testing\include"
 
 build $build_dir\testing-test-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1456,13 +1468,13 @@ build modules\util\include\zlib_result_code.hpp!: limpin modules\util\include\zl
 build $build_dir\debug\util\src\pch.obj: cl modules\util\src\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-debug.pdb
-   extra = /DBE_TARGET=util /DBE_TARGET_BASE=util /DBE_UTIL_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_TARGET=util /DBE_TARGET_BASE=util /DBE_UTIL_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-debug.pch" /Yc"pch.hpp"
 build $build_dir\util-debug.pch: phony $build_dir\debug\util\src\pch.obj
 
 build $build_dir\debug\util\src\fnv.obj: cl modules\util\src\fnv.cpp | $build_dir\util-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-debug.pdb
-   extra = /DBE_TARGET=util /DBE_TARGET_BASE=util /DBE_UTIL_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util /DBE_TARGET_BASE=util /DBE_UTIL_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\util-debug.lib: lib $build_dir\debug\util\src\pch.obj $build_dir\debug\util\src\fnv.obj || init!
    out_file = util-debug.lib
@@ -1475,18 +1487,18 @@ build modules\util\src-compression\zlib_result_code.cpp!: limpin modules\util\sr
 build $build_dir\debug\util-compression\src-compression\pch.obj: cl modules\util\src-compression\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-compression-debug.pdb
-   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yc"pch.hpp"
 build $build_dir\util-compression-debug.pch: phony $build_dir\debug\util-compression\src-compression\pch.obj
 
 build $build_dir\debug\util-compression\src-compression\zlib.obj: cl modules\util\src-compression\zlib.cpp | $build_dir\util-compression-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-compression-debug.pdb
-   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-compression\src-compression\zlib_result_code.obj: cl modules\util\src-compression\zlib_result_code.cpp | $build_dir\util-compression-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-compression-debug.pdb
-   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-compression /DBE_TARGET_BASE=util /DBE_UTIL_COMPRESSION_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-compression-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\util-compression-debug.lib: lib $build_dir\debug\util-compression\src-compression\pch.obj $build_dir\debug\util-compression\src-compression\zlib.obj $build_dir\debug\util-compression\src-compression\zlib_result_code.obj || init!
    out_file = util-compression-debug.lib
@@ -1497,28 +1509,28 @@ build project-util-compression!: phony project-util-compression-debug!
 build $build_dir\debug\util-prng\src-prng\pch.obj: cl modules\util\src-prng\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-prng-debug.pdb
-   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yc"pch.hpp"
 build $build_dir\util-prng-debug.pch: phony $build_dir\debug\util-prng\src-prng\pch.obj
 
 build $build_dir\debug\util-prng\src-prng\service_split_mix_64.obj: cl modules\util\src-prng\service_split_mix_64.cpp | $build_dir\util-prng-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-prng-debug.pdb
-   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-prng\src-prng\service_xoroshiro_128_plus.obj: cl modules\util\src-prng\service_xoroshiro_128_plus.cpp | $build_dir\util-prng-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-prng-debug.pdb
-   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-prng\src-prng\service_xorshift_1024_star.obj: cl modules\util\src-prng\service_xorshift_1024_star.cpp | $build_dir\util-prng-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-prng-debug.pdb
-   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-prng\src-prng\service_xorshift_128_plus.obj: cl modules\util\src-prng\service_xorshift_128_plus.cpp | $build_dir\util-prng-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-prng-debug.pdb
-   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-prng /DBE_TARGET_BASE=util /DBE_UTIL_PRNG_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-prng-debug.pch" /Yu"pch.hpp"
 
 build $out_dir\util-prng-debug.lib: lib $build_dir\debug\util-prng\src-prng\pch.obj $build_dir\debug\util-prng\src-prng\service_split_mix_64.obj $build_dir\debug\util-prng\src-prng\service_xoroshiro_128_plus.obj $build_dir\debug\util-prng\src-prng\service_xorshift_1024_star.obj $build_dir\debug\util-prng\src-prng\service_xorshift_128_plus.obj || init!
    out_file = util-prng-debug.lib
@@ -1531,38 +1543,38 @@ build modules\util\src-string\parse_string_error_condition.cpp!: limpin modules\
 build $build_dir\debug\util-string\src-string\pch.obj: cl modules\util\src-string\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yc"pch.hpp"
 build $build_dir\util-string-debug.pch: phony $build_dir\debug\util-string\src-string\pch.obj
 
 build $build_dir\debug\util-string\src-string\binary_units.obj: cl modules\util\src-string\binary_units.cpp | $build_dir\util-string-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-string\src-string\parse_string_error_condition.obj: cl modules\util\src-string\parse_string_error_condition.cpp | $build_dir\util-string-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-string\src-string\pointer_to_string.obj: cl modules\util\src-string\pointer_to_string.cpp | $build_dir\util-string-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-string\src-string\utf8_codepoint.obj: cl modules\util\src-string\utf8_codepoint.cpp | $build_dir\util-string-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-string\src-string\utf8_iterator.obj: cl modules\util\src-string\utf8_iterator.cpp | $build_dir\util-string-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-string-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-string\src-string\native\vc_win\utf16_widen_narrow.obj: cl modules\util\src-string\native\vc_win\utf16_widen_narrow.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-string-debug.pdb
-   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-string /DBE_TARGET_BASE=util /DBE_UTIL_STRING_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $out_dir\util-string-debug.lib: lib $build_dir\debug\util-string\src-string\pch.obj $build_dir\debug\util-string\src-string\binary_units.obj $build_dir\debug\util-string\src-string\parse_string_error_condition.obj $build_dir\debug\util-string\src-string\pointer_to_string.obj $build_dir\debug\util-string\src-string\utf8_codepoint.obj $build_dir\debug\util-string\src-string\utf8_iterator.obj $build_dir\debug\util-string\src-string\native\vc_win\utf16_widen_narrow.obj || init!
    out_file = util-string-debug.lib
@@ -1573,33 +1585,33 @@ build project-util-string!: phony project-util-string-debug!
 build $build_dir\debug\util-fs\src-fs\pch.obj: cl modules\util\src-fs\pch.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yc"pch.hpp"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yc"pch.hpp"
 build $build_dir\util-fs-debug.pch: phony $build_dir\debug\util-fs\src-fs\pch.obj
 
 build $build_dir\debug\util-fs\src-fs\get_file_contents.obj: cl modules\util\src-fs\get_file_contents.cpp | $build_dir\util-fs-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-fs\src-fs\path_glob.obj: cl modules\util\src-fs\path_glob.cpp | $build_dir\util-fs-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-fs\src-fs\paths.obj: cl modules\util\src-fs\paths.cpp | $build_dir\util-fs-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-fs\src-fs\put_file_contents.obj: cl modules\util\src-fs\put_file_contents.cpp | $build_dir\util-fs-debug.pch || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include" /Fp"$build_dir\util-fs-debug.pch" /Yu"pch.hpp"
 
 build $build_dir\debug\util-fs\src-fs\native\vc_win\paths.obj: cl modules\util\src-fs\native\vc_win\paths.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-fs-debug.pdb
-   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-fs /DBE_TARGET_BASE=util /DBE_UTIL_FS_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $out_dir\util-fs-debug.lib: lib $build_dir\debug\util-fs\src-fs\pch.obj $build_dir\debug\util-fs\src-fs\get_file_contents.obj $build_dir\debug\util-fs\src-fs\path_glob.obj $build_dir\debug\util-fs\src-fs\paths.obj $build_dir\debug\util-fs\src-fs\put_file_contents.obj $build_dir\debug\util-fs\src-fs\native\vc_win\paths.obj || init!
    out_file = util-fs-debug.lib
@@ -1610,22 +1622,22 @@ build project-util-fs!: phony project-util-fs-debug!
 build $build_dir\debug\util-lua\src-lua\lua_fnv256.obj: cl modules\util\src-lua\lua_fnv256.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-lua-debug.pdb
-   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-lua\src-lua\lua_fs.obj: cl modules\util\src-lua\lua_fs.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-lua-debug.pdb
-   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-lua\src-lua\lua_interpolate_string.obj: cl modules\util\src-lua\lua_interpolate_string.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-lua-debug.pdb
-   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-lua\src-lua\lua_util.obj: cl modules\util\src-lua\lua_util.cpp || init!
    flags = $cl_flags_lib_debug
    pdb = $build_dir\util-lua-debug.pdb
-   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_TARGET=util-lua /DBE_TARGET_BASE=util /DBE_UTIL_LUA_IMPL /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $out_dir\util-lua-debug.lib: lib $build_dir\debug\util-lua\src-lua\lua_fnv256.obj $build_dir\debug\util-lua\src-lua\lua_fs.obj $build_dir\debug\util-lua\src-lua\lua_interpolate_string.obj $build_dir\debug\util-lua\src-lua\lua_util.obj || init!
    out_file = util-lua-debug.lib
@@ -1636,57 +1648,57 @@ build project-util-lua!: phony project-util-lua-debug!
 build $build_dir\debug\util-test\test\test_base64.obj: cl modules\util\test\test_base64.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_binary_units.obj: cl modules\util\test\test_binary_units.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_chunked_list.obj: cl modules\util\test\test_chunked_list.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_interpolate_string.obj: cl modules\util\test\test_interpolate_string.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_main.obj: cl modules\util\test\test_main.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_split_mix_64.obj: cl modules\util\test\test_split_mix_64.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_utf8_iterator.obj: cl modules\util\test\test_utf8_iterator.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_xoroshiro_128_plus.obj: cl modules\util\test\test_xoroshiro_128_plus.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_xorshift_1024_star.obj: cl modules\util\test\test_xorshift_1024_star.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\test_xorshift_128_plus.obj: cl modules\util\test\test_xorshift_128_plus.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-test\test\version.obj: cl modules\util\test\version.cpp || init!
    flags = $cl_flags_test_debug
    pdb = $build_dir\util-test-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-test /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\util-test-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1710,22 +1722,22 @@ build project-util-test!: phony project-util-test-debug!
 build $build_dir\debug\util-perf\perf\associative_containers.obj: cl modules\util\perf\associative_containers.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\util-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-perf\perf\perf_main.obj: cl modules\util\perf\perf_main.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\util-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-perf\perf\sequence_containers.obj: cl modules\util\perf\sequence_containers.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\util-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\debug\util-perf\perf\version.obj: cl modules\util\perf\version.cpp || init!
    flags = $cl_flags_perf_debug
    pdb = $build_dir\util-perf-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"modules\util\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=util-perf /DBE_TARGET_BASE=util /DZLIB_CONST /DZ_SOLO /I"include" /I"modules\util\include"
 
 build $build_dir\util-perf-debug.icon.rc: putfile | icon\bengine-test-perf.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-test-perf.ico^"&echo:$
@@ -1753,12 +1765,12 @@ build tools\bltc\include\version.hpp!: limpin tools\bltc\include\version.hpp
 build $build_dir\debug\bltc\src\bltc.obj: cl tools\bltc\src\bltc.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\bltc-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=bltc /DBE_TARGET_BASE=bltc /DZLIB_CONST /DZ_SOLO /I"tools\bltc\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=bltc /DBE_TARGET_BASE=bltc /DZLIB_CONST /DZ_SOLO /I"include" /I"tools\bltc\include"
 
 build $build_dir\debug\bltc\src\bltc_app.obj: cl tools\bltc\src\bltc_app.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\bltc-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=bltc /DBE_TARGET_BASE=bltc /DZLIB_CONST /DZ_SOLO /I"tools\bltc\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=bltc /DBE_TARGET_BASE=bltc /DZLIB_CONST /DZ_SOLO /I"include" /I"tools\bltc\include"
 
 build $build_dir\bltc-debug.icon.rc: putfile | icon\bengine-warm.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-warm.ico^"&echo:$
@@ -1784,17 +1796,17 @@ build tools\limp\include\version.hpp!: limpin tools\limp\include\version.hpp
 build $build_dir\debug\limp\src\limp.obj: cl tools\limp\src\limp.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\limp-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"tools\limp\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"include" /I"tools\limp\include"
 
 build $build_dir\debug\limp\src\limp_app.obj: cl tools\limp\src\limp_app.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\limp-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"tools\limp\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"include" /I"tools\limp\include"
 
 build $build_dir\debug\limp\src\limp_processor.obj: cl tools\limp\src\limp_processor.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\limp-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"tools\limp\include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=limp /DBE_TARGET_BASE=limp /DZLIB_CONST /DZ_SOLO /I"include" /I"tools\limp\include"
 
 build $build_dir\limp-debug.icon.rc: putfile | icon\bengine-warm.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-warm.ico^"&echo:$
@@ -1830,27 +1842,27 @@ build tools\misc\src-idgen\version.hpp!: limpin tools\misc\src-idgen\version.hpp
 build $build_dir\debug\idgen\src-idgen\format.obj: cl tools\misc\src-idgen\format.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\idgen-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\debug\idgen\src-idgen\idgen.obj: cl tools\misc\src-idgen\idgen.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\idgen-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\debug\idgen\src-idgen\idgen_app.obj: cl tools\misc\src-idgen\idgen_app.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\idgen-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\debug\idgen\src-idgen\mode.obj: cl tools\misc\src-idgen\mode.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\idgen-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\debug\idgen\src-idgen\type.obj: cl tools\misc\src-idgen\type.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\idgen-debug.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=idgen /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\idgen-debug.icon.rc: putfile | icon\bengine-warm.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-warm.ico^"&echo:$
@@ -1872,12 +1884,12 @@ build tools\misc\src-sizeof\version.hpp!: limpin tools\misc\src-sizeof\version.h
 build $build_dir\debug\sizeof\src-sizeof\size_of_type.obj: cl tools\misc\src-sizeof\size_of_type.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\sizeof-debug.pdb
-   extra = /DBE_TARGET=sizeof /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_TARGET=sizeof /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\debug\sizeof\src-sizeof\sizeof.obj: cl tools\misc\src-sizeof\sizeof.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\sizeof-debug.pdb
-   extra = /DBE_TARGET=sizeof /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO
+   extra = /DBE_TARGET=sizeof /DBE_TARGET_BASE=tools-misc /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\sizeof-debug.icon.rc: putfile | icon\bengine-warm.ico || init!
    contents = 101 ICON ^"icon^\^\bengine-warm.ico^"&echo:$
@@ -1903,7 +1915,7 @@ build group-tools-misc!: phony project-idgen! project-sizeof! project-ccolor! pr
 build $build_dir\debug\omicron\src\omicron.obj: cl demos\omicron\src\omicron.cpp || init!
    flags = $cl_flags_debug
    pdb = $build_dir\omicron-debug.pdb
-   extra = /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include"
+   extra = /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
 
 build $build_dir\omicron-debug.icon.rc: putfile | icon\bengine.ico || init!
    contents = 101 ICON ^"icon^\^\bengine.ico^"&echo:$
@@ -1911,7 +1923,7 @@ GLFW_ICON ICON ^"icon^\^\bengine.ico^"
 build $build_dir\omicron-debug.icon.res: rc $build_dir\omicron-debug.icon.rc || init!
 build $out_dir\omicron-debug.pdb!: pdb $out_dir\omicron-debug.pdb
 
-build $out_dir\omicron-debug.exe | $out_dir\omicron-debug.pdb: link $ext_lib_dir\glfw-debug.lib $ext_lib_dir\zlib-static-debug.lib $out_dir\core-debug.lib $out_dir\core-id-debug.lib $out_dir\platform-debug.lib $out_dir\util-compression-debug.lib $out_dir\util-fs-debug.lib $out_dir\util-prng-debug.lib $build_dir\debug\omicron\src\omicron.obj $build_dir\omicron-debug.icon.res $build_dir\default.manifest.res || init!
+build $out_dir\omicron-debug.exe | $out_dir\omicron-debug.pdb: link $ext_lib_dir\glew-debug.lib $ext_lib_dir\glfw-debug.lib $ext_lib_dir\zlib-static-debug.lib $out_dir\core-debug.lib $out_dir\core-id-debug.lib $out_dir\platform-debug.lib $out_dir\util-compression-debug.lib $out_dir\util-fs-debug.lib $out_dir\util-prng-debug.lib $build_dir\debug\omicron\src\omicron.obj $build_dir\omicron-debug.icon.res $build_dir\default.manifest.res || init!
    out_file = omicron-debug.exe
    pdb = $out_dir\omicron-debug.pdb
    flags = $link_flags_console_debug
@@ -1923,7 +1935,7 @@ build group-omicron-debug!: phony project-omicron-debug!
 build group-omicron!: phony project-omicron!
 build all-debug!: phony group-deps-debug! group-belua-debug! group-blt-debug! group-cli-debug! group-core-debug! group-ctable-debug! group-perf-debug! group-platform-debug! group-sqlite-debug! group-testing-debug! group-util-debug! group-bltc-debug! group-limp-debug! group-tools-misc-debug! group-omicron-debug!
 build all!: phony group-deps! group-belua! group-blt! group-cli! group-core! group-ctable! group-perf! group-platform! group-sqlite! group-testing! group-util! group-bltc! group-limp! group-tools-misc! group-omicron!
-build externals!: phony $ext_lib_dir\zlib-static-debug.lib $ext_lib_dir\glfw-debug.lib $ext_lib_dir\luaxx-debug.lib
+build externals!: phony $ext_lib_dir\zlib-static-debug.lib $ext_lib_dir\glew-debug.lib $ext_lib_dir\glfw-debug.lib $ext_lib_dir\luaxx-debug.lib
 build limp!: phony modules\belua\include\result_code.hpp! modules\belua\include\version.hpp! modules\belua\src\result_code.cpp! modules\blt\include\version.hpp! modules\blt\src-lua\lua_blt.cpp! modules\cli\include\section_ids.hpp! modules\cli\include\version.hpp! modules\core\include\log_attrib_ids.hpp! modules\core\include\service_ids.hpp! modules\core\include\version.hpp! modules\ctable\include\version.hpp! modules\perf\include\version.hpp! modules\platform\include\version.hpp! modules\sqlite\include\result_code.hpp! modules\sqlite\include\result_type.hpp! modules\sqlite\include\transaction_type.hpp! modules\sqlite\include\version.hpp! modules\sqlite\src\result_code.cpp! modules\sqlite\src\result_type.cpp! modules\sqlite\src\transaction_type.cpp! modules\testing\include\version.hpp! modules\util\include\parse_string_error_condition.hpp! modules\util\include\version.hpp! modules\util\include\zlib_result_code.hpp! modules\util\src-compression\zlib_result_code.cpp! modules\util\src-string\parse_string_error_condition.cpp! tools\bltc\include\version.hpp! tools\limp\include\limp_lua.hpp! tools\limp\include\version.hpp! tools\misc\src-idgen\format.cpp! tools\misc\src-idgen\mode.cpp! tools\misc\src-idgen\type.cpp! tools\misc\src-idgen\format.hpp! tools\misc\src-idgen\mode.hpp! tools\misc\src-idgen\type.hpp! tools\misc\src-idgen\version.hpp! tools\misc\src-sizeof\version.hpp!
 build run-perf-debug!: phony run-project-core-perf-debug! run-project-util-perf-debug!
 build run-test-debug!: phony run-project-core-test-debug! run-project-ctable-test-debug! run-project-sqlite-test-debug! run-project-testing-test-debug! run-project-util-test-debug!

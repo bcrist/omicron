@@ -14,6 +14,7 @@
     <ProjectName>omicron</ProjectName>
     <RootNamespace>omicron</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{97B10F92-678E-4DCD-89D9-EE87ACEA1EF2}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">

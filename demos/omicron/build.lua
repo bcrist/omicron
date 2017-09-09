@@ -4,7 +4,9 @@ demo 'omicron' {
       link_project {
           'platform',
           'core-id',
-          'util-fs'
+          'util-fs',
+          'glfw',
+          'glew'
       }
    }
 }

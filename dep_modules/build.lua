@@ -2,6 +2,7 @@ deps {
    ext_include_dir 'glm'       { path 'glm/glm' },
    ext_include_dir 'gsl'       { path 'gsl/gsl' },
    ext_include_dir 'glfw'      { path 'glfw/include/GLFW' },
+   ext_include_dir 'GL'        { path 'glew/include/GL' },
    ext_include_dir 'pugixml'   { path 'pugixml/src' },
    ext_include_dir 'catch'     { path 'catch/single_include' },
    ext_include_dir 'lua'       { },
@@ -33,6 +34,24 @@ deps {
          'Z_SOLO',
          'ZLIB_CONST'
       }
+   },
+
+   ext_lib 'glew' {
+      path 'glew',
+      force_c,
+      include 'include',
+      src {
+         'src/*.c'
+      },
+      define {
+         'GLEW_STATIC',
+         'GLEW_NO_GLU'
+      },
+      export_define {
+         'GLEW_STATIC',
+         'GLEW_NO_GLU'
+      },
+      link 'opengl32'
    },
 
    ext_lib 'glfw' {
