@@ -3,10 +3,11 @@ demo 'omicron' {
       icon 'icon/bengine.ico',
       link_project {
           'platform',
-          'core-id',
+          'core-id-with-names',
           'util-fs',
           'glfw',
-          'glew'
+          'glew',
+          'core'
       }
    }
 }

@@ -1953,14 +1953,14 @@ build group-tools-misc!: phony project-idgen! project-sizeof! project-ccolor! pr
 build $build_dir\release\omicron\src\omicron.obj: cl demos\omicron\src\omicron.cpp || init!
    flags = $cl_flags_release
    pdb = $build_dir\omicron.pdb
-   extra = /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"include"
 
 build $build_dir\omicron.icon.rc: putfile | icon\bengine.ico || init!
    contents = 101 ICON ^"icon^\^\bengine.ico^"&echo:$
 GLFW_ICON ICON ^"icon^\^\bengine.ico^"
 build $build_dir\omicron.icon.res: rc $build_dir\omicron.icon.rc || init!
 
-build $out_dir\omicron.exe: link $ext_lib_dir\glew.lib $ext_lib_dir\glfw.lib $ext_lib_dir\zlib-static.lib $out_dir\core-id.lib $out_dir\core.lib $out_dir\platform.lib $out_dir\util-compression.lib $out_dir\util-fs.lib $out_dir\util-prng.lib $build_dir\release\omicron\src\omicron.obj $build_dir\omicron.icon.res $build_dir\default.manifest.res || init!
+build $out_dir\omicron.exe: link $ext_lib_dir\glew.lib $ext_lib_dir\glfw.lib $ext_lib_dir\zlib-static.lib $out_dir\core-id-with-names.lib $out_dir\core.lib $out_dir\platform.lib $out_dir\util-compression.lib $out_dir\util-fs.lib $out_dir\util-prng.lib $build_dir\release\omicron\src\omicron.obj $build_dir\omicron.icon.res $build_dir\default.manifest.res || init!
    out_file = omicron.exe
    pdb = $out_dir\omicron.pdb
    flags = $link_flags_console_release
