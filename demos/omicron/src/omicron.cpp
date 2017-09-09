@@ -1,8 +1,12 @@
+#include "game.hpp"
+#include "texture_manager.hpp"
+
 #include <be/core/lifecycle.hpp>
 #include <be/platform/lifecycle.hpp>
 #include <GL/glew.h>
 #include <be/platform/glfw.hpp>
 #include <be/core/glm.hpp>
+#include <be/util/path_glob.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -73,6 +77,18 @@ int main(int argc, char** argv) {
    glfwSwapInterval(0);
    glewInit();
    
+   TextureManager tm;
+
+   be::Path asset_root = be::util::default_special_path(be::util::SpecialPath::install) / "assets";
+
+   std::vector<be::Path> atlases = be::util::glob("*.atlas", asset_root, be::util::PathMatchType::files);
+
+
+
+
+
+
+
    glfwSetKeyCallback(wnd, keyboard_handler);
    glfwSetMouseButtonCallback(wnd, mouse_btn_handler);
    glfwSetScrollCallback(wnd, mouse_wheel_handler);

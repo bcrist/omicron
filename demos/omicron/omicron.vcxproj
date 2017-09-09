@@ -43,7 +43,19 @@
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
+    <ClCompile Include="include\game.cpp" />
+    <ClCompile Include="include\scene.cpp" />
+    <ClCompile Include="include\sprite.cpp" />
     <ClCompile Include="src\omicron.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\game.hpp" />
+    <ClInclude Include="include\ids.hpp" />
+    <ClInclude Include="include\scene.hpp" />
+    <ClInclude Include="include\sprite.hpp" />
+    <ClInclude Include="include\texture.hpp" />
+    <ClInclude Include="include\texture_manager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
