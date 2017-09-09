@@ -2,6 +2,7 @@
 #ifndef O_TEXTURE_HPP_
 #define O_TEXTURE_HPP_
 
+#include "omicron.hpp"
 #include <GL/glew.h>
 #include <be/core/be.hpp>
 #include <be/core/buf.hpp>
@@ -10,7 +11,8 @@
 
 namespace o {
 
-class GlTexture final : be::Movable {
+//////////////////////////////////////////////////////////////////////////////
+class GlTexture final : Movable {
 public:
    GlTexture() noexcept;
    GlTexture(GlTexture&& other) noexcept;
@@ -20,13 +22,21 @@ public:
    void init() noexcept;
    void deinit() noexcept;
 
-   void bind() noexcept;
+   explicit operator bool() const noexcept {
+      return id_ != 0;
+   }
+
+   GLuint id() const noexcept {
+      return id_;
+   }
+
+   void bind() const noexcept;
    static void unbind() noexcept;
 
-   void enable() noexcept;
+   void enable() const noexcept;
    static void disable() noexcept;
 
-   void upload(be::Buf<be::UC> data, be::ivec2 dim, int comps);
+   void upload(const Buf<const UC>& data, ivec2 dim, int comps) const noexcept;
 
 private:
    GLuint id_;
@@ -34,24 +44,27 @@ private:
    static bool tex_enabled_;
 };
 
-
-
+//////////////////////////////////////////////////////////////////////////////
 class Texture final {
 public:
+   Texture() noexcept { };
+   Texture(const Buf<const UC>& data, ivec2 dim, int comps) noexcept;
 
-   Texture(be::Buf<be::UC> data, be::ivec2 dim, int comps)
+   explicit operator bool() const noexcept {
+      return !!gl_;
+   }
 
-   //TextureRegion region() const;
+   GLuint glid() const noexcept {
+      return gl_.id();
+   }
 
-   //TextureRegion region(be::Id id) const;
-
-
+   ivec2 dim() const noexcept {
+      return dim_;
+   }
 
 private:
    GlTexture gl_;
-   be::ivec2 dim_;
-   // std::unordered_map<be::Id, TextureRegion> regions_;
-
+   ivec2 dim_;
 };
 
 } // o

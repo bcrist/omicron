@@ -4,20 +4,36 @@
 
 #include "texture.hpp"
 #include <be/core/id.hpp>
+#include <unordered_map>
+#include <be/core/service.hpp>
 
 namespace o {
 
+class TextureManager;
+
+} // o
+namespace be {
+
+///////////////////////////////////////////////////////////////////////////////
+template <>
+struct SuppressUndefinedService<o::TextureManager> : True { };
+
+} // be
+namespace o {
+
+//////////////////////////////////////////////////////////////////////////////
 class TextureManager final {
 public:
-
-   const Texture& get(be::Id id)
-
+   void clear();
+   void add(Id id, Texture texture);
+   const Texture& get(Id id);
 
 private:
-   std::unordered_map<be::Id, Texture> textures_;
+   void init_default_();
+
+   std::unordered_map<Id, Texture> textures_;
    Texture default_texture_;
 };
-
 
 } // o
 

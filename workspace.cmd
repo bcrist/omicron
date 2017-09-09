@@ -24,5 +24,5 @@ if not exist %_vcvarsall% (
 
 call %_vcvarsall% x64
 set PATH=%~dp0stage;%~dp0bin;%PATH%
-cmd
+cmd /K "cd /d %~dp0"
 popd
