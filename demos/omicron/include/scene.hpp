@@ -12,6 +12,8 @@ class Scene {
 public:
    virtual ~Scene() = default;
 
+   virtual const char* name() const = 0;
+
    virtual void key_down(I16 key) = 0;
    virtual void key_up(I16 key) = 0;
 

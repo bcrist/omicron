@@ -51,7 +51,7 @@ void GameScene::update(F64 dt) {
       case state::fade_out_dead:
          last_curtain_opacity_ = curtain_opacity_;
          if (curtain_opacity_ < 1.f) {
-            curtain_opacity_ -= ( F32 ) (curtain_speed_ * dt);
+            curtain_opacity_ += ( F32 ) (curtain_speed_ * dt);
          }
          if (curtain_opacity_ >= 1.f) {
             service<Game>().new_game();
@@ -66,6 +66,8 @@ void GameScene::update(F64 dt) {
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::render(F64 dt, F64 f) {
    F32 o = 1.f - ( F32 ) (last_curtain_opacity_ + f * (curtain_opacity_ - last_curtain_opacity_));
+
+   
 
    glBegin(GL_LINES);
    glColor4f(1, 0, 0, o);      glVertex2f(1, 0);

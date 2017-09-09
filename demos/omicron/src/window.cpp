@@ -71,12 +71,13 @@ void Window::create() {
    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
    const GLFWvidmode* monitor_mode = glfwGetVideoMode(monitor);
 
-   ivec2 monitor_pos;
-   glfwGetMonitorPos(monitor, &monitor_pos.x, &monitor_pos.y);
+   ivec2 size(monitor_mode->width, monitor_mode->height);
+
+   ivec2 pos;
+   glfwGetMonitorPos(monitor, &pos.x, &pos.y);
 
    glfwDefaultWindowHints();
    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-   glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
    glfwWindowHint(GLFW_SRGB_CAPABLE, GLFW_TRUE);
    glfwWindowHint(GLFW_RED_BITS, monitor_mode->redBits);
@@ -91,16 +92,21 @@ void Window::create() {
 
 #ifdef BE_DEBUG
    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+   size.x = 800;
+   size.y = 600;
+   pos.x = 50;
+   pos.y = 50;
 #else
    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
+   glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 #endif
 
-   glfw_ = glfwCreateWindow(monitor_mode->width, monitor_mode->height, "Omicron", nullptr, nullptr);
+   glfw_ = glfwCreateWindow(size.x, size.y, "Omicron", nullptr, nullptr);
    if (!glfw_) {
       throw std::runtime_error("Failed to create window!");
    }
 
-   glfwSetWindowPos(glfw_, monitor_pos.x, monitor_pos.y);
+   glfwSetWindowPos(glfw_, pos.x, pos.y);
    glfwMakeContextCurrent(glfw_);
    glfwSwapInterval(0);
    glewInit();

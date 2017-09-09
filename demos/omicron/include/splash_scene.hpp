@@ -18,6 +18,10 @@ class SplashScene final : public Scene, Immovable {
 public:
    SplashScene();
 
+   virtual const char* name() const override {
+      return "SplashScene";
+   }
+
    virtual void key_down(I16 key) override { }
    virtual void key_up(I16 key) override;
 
@@ -41,8 +45,8 @@ private:
    F32 last_curtain_opacity_;
    F32 curtain_opacity_;
 
-   static constexpr F64 curtain_speed_ = 0.5;
-   static constexpr F64 wait_duration_ = 3.0;
+   static constexpr F64 curtain_speed_ = 1.0;
+   static constexpr F64 wait_duration_ = 1.5;
 };
 
 } // o

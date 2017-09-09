@@ -69,30 +69,38 @@ int Game::run() {
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
    scene(std::make_unique<SplashScene>());
+
+   prev_update_time_ = -fixed_update_rate_;
+   update_time_ = 0;
 
    while (!glfwWindowShouldClose(window.glfw())) {
       glfwPollEvents();
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      Scene* s = scene_.get();
-      if (s) {
-         F64 time = glfwGetTime();
-
-         while (time > update_time_) {
-            prev_update_time_ = update_time_;
-            update_time_ += fixed_update_rate_;
+      F64 time = glfwGetTime();
+      while (time > update_time_) {
+         prev_update_time_ = update_time_;
+         update_time_ += fixed_update_rate_;
+         Scene* s = scene_.get();
+         if (s) {
             s->update(fixed_update_rate_);
          }
+      }
 
-         F64 interpolation_coeff = (time - prev_update_time_) / fixed_update_rate_;
+      F64 interpolation_coeff = (time - prev_update_time_) / fixed_update_rate_;
+      Scene* s = scene_.get();
+      if (s) {
          s->render(fixed_update_rate_, interpolation_coeff);
+      }
 
-         if (time > timer_reset_interval_) {
-            glfwSetTime(time - prev_update_time_);
-            prev_update_time_ = 0;
-            update_time_ = fixed_update_rate_;
-         }
+      if (time > timer_reset_interval_) {
+         glfwSetTime(time - prev_update_time_);
+         prev_update_time_ = 0;
+         update_time_ = fixed_update_rate_;
       }
       glfwSwapBuffers(window.glfw());
    }
@@ -112,11 +120,13 @@ Scene* Game::scene() {
 
 //////////////////////////////////////////////////////////////////////////////
 void Game::scene(std::unique_ptr<Scene> s) {
+   be_info() << "Scene Change"
+      & attr(ids::log_attr_name) << s->name()
+      | default_log();
+
+   s->update(fixed_update_rate_);
    service<Window>().scene(s.get());
    scene_ = std::move(s);
-   glfwSetTime(0);
-   prev_update_time_ = -fixed_update_rate_;
-   update_time_ = 0;
 }
 
 } // o

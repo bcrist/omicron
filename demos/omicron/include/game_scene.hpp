@@ -18,6 +18,10 @@ class GameScene final : public Scene, Immovable {
 public:
    GameScene();
 
+   virtual const char* name() const override {
+      return "GameScene";
+   }
+
    virtual void key_down(I16 key) override { }
    virtual void key_up(I16 key) override;
 

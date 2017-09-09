@@ -3,6 +3,7 @@
 #include <be/core/service_helpers.hpp>
 #include <GL/glew.h>
 #include <be/platform/glfw.hpp>
+#include <be/core/logging.hpp>
 
 namespace o {
 
@@ -51,7 +52,7 @@ void SplashScene::update(F64 dt) {
       case state::fade_out:
          last_curtain_opacity_ = curtain_opacity_;
          if (curtain_opacity_ < 1.f) {
-            curtain_opacity_ -= ( F32 ) (curtain_speed_ * dt);
+            curtain_opacity_ += ( F32 ) (curtain_speed_ * dt);
          }
          if (curtain_opacity_ >= 1.f) {
             service<Game>().new_game();
