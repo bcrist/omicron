@@ -5,6 +5,7 @@
 #include "scene.hpp"
 #include "mesh_manager.hpp"
 #include "environment.hpp"
+#include "player.hpp"
 
 namespace o {
 
@@ -53,6 +54,8 @@ private:
    F32 curtain_opacity_;
 
    Environment env_;
+
+   Player player_;
    
 };
 

@@ -59,26 +59,66 @@ constexpr const char* env_data =
 //////////////////////////////////////////////////////////////////////////////
 GameScene::GameScene()
    : curtain_opacity_(1.f),
-     env_(mm_, ivec2(50, 40), env_data) {
+     env_(mm_, ivec2(50, 40), env_data),
+     player_(mm_, vec2(service<Window>().dim()) / 48.f) {
    change_state_(state::fade_in);
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::key_down(I16 key) {
+   switch (key) {
+      case GLFW_KEY_W:
+         player_.signal_movement(vec2(0, -1));
+         break;
+      case GLFW_KEY_A:
+         player_.signal_movement(vec2(-1, 0));
+         break;
+      case GLFW_KEY_S:
+         player_.signal_movement(vec2(0, 1));
+         break;
+      case GLFW_KEY_D:
+         player_.signal_movement(vec2(1, 0));
+         break;
+
+      default:
+         break;
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::key_up(I16 key) {
-   
+   switch (key) {
+      case GLFW_KEY_W:
+         player_.signal_movement(vec2(0, 1));
+         break;
+      case GLFW_KEY_A:
+         player_.signal_movement(vec2(1, 0));
+         break;
+      case GLFW_KEY_S:
+         player_.signal_movement(vec2(0, -1));
+         break;
+      case GLFW_KEY_D:
+         player_.signal_movement(vec2(-1, 0));
+         break;
+
+      default:
+         break;
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::mouse_down(I8 btn) {
+   if (btn == 0) {
+      player_.block(false);
+      player_.attack();
+   } else if (btn == 1) {
+      player_.block(true);
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::mouse_up(I8 btn) {
-   
+   player_.block(false);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -110,6 +150,9 @@ void GameScene::update(F64 dt) {
 
       case state::play:
          // TODO if(player.dead()) { change_state_(state::fade_out); }
+
+         player_.update(dt);
+
          break;
 
       case state::fade_out:

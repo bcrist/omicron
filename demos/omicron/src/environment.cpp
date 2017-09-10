@@ -46,7 +46,7 @@ Environment::Environment(MeshManager& mm, ivec2 dim, const S& data) {
                region = &grass[grass_dist(prng)];
          }
 
-         update_verts(tmp_buf(verts), *region, vec2(x, y), 1 / 16.f);
+         update_verts(tmp_buf(verts), *region, vec2(x, y), 1 / 16.f, RGBA(255,255,255,255));
       }
    }
 

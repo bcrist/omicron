@@ -49,6 +49,7 @@
     <ClInclude Include="include\ids.hpp" />
     <ClInclude Include="include\mesh_manager.hpp" />
     <ClInclude Include="include\omicron.hpp" />
+    <ClInclude Include="include\player.hpp" />
     <ClInclude Include="include\scene.hpp" />
     <ClInclude Include="include\splash_scene.hpp" />
     <ClInclude Include="include\mesh.hpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="src\mesh_helpers.cpp" />
     <ClCompile Include="src\mesh_manager.cpp" />
     <ClCompile Include="src\omicron.cpp" />
+    <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\pugi.cpp" />
     <ClCompile Include="src\splash_scene.cpp" />
     <ClCompile Include="src\mesh.cpp" />
