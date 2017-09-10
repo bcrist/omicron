@@ -22,12 +22,14 @@ public:
       return "GameScene";
    }
 
+   virtual void init() override;
+
    virtual void key_down(I16 key) override { }
    virtual void key_up(I16 key) override;
 
    virtual void mouse_down(I8 btn) override { }
    virtual void mouse_up(I8 btn) override;
-   virtual void mouse_move(vec2 norm_pos) override { }
+   virtual void mouse_move(vec2 pos) override { }
    virtual void mouse_wheel(I32 delta) override { }
 
    virtual void update(F64 dt) override;

@@ -2,12 +2,13 @@
 #ifndef O_TEXTURE_HPP_
 #define O_TEXTURE_HPP_
 
-#include "omicron.hpp"
+#include "texture_region.hpp"
 #include <GL/glew.h>
-#include <be/core/be.hpp>
+#include <be/core/id.hpp>
 #include <be/core/buf.hpp>
 #include <be/core/glm.hpp>
 #include <glm/glm.hpp>
+#include <unordered_map>
 
 namespace o {
 
@@ -31,9 +32,11 @@ public:
    }
 
    void bind() const noexcept;
+   static void bind(GLuint id) noexcept;
    static void unbind() noexcept;
 
    void enable() const noexcept;
+   static void enable(GLuint id) noexcept;
    static void disable() noexcept;
 
    void upload(const Buf<const UC>& data, ivec2 dim, int comps) const noexcept;
@@ -54,6 +57,10 @@ public:
       return !!gl_;
    }
 
+   const GlTexture& gl() const noexcept {
+      return gl_;
+   }
+
    GLuint glid() const noexcept {
       return gl_.id();
    }
@@ -62,9 +69,25 @@ public:
       return dim_;
    }
 
+   void add_region(Id id, TextureRegion region) {
+      regions_[id] = region;
+   }
+
+   const TextureRegion& region(Id id) const {
+      auto it = regions_.find(id);
+      if (it != regions_.end()) {
+         return it->second;
+      } else {
+         return empty_;
+      }
+   }
+
 private:
    GlTexture gl_;
    ivec2 dim_;
+   std::unordered_map<Id, TextureRegion> regions_;
+
+   static const TextureRegion empty_;
 };
 
 } // o

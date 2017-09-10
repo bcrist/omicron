@@ -46,25 +46,33 @@
     <ClInclude Include="include\game.hpp" />
     <ClInclude Include="include\game_scene.hpp" />
     <ClInclude Include="include\ids.hpp" />
+    <ClInclude Include="include\mesh_manager.hpp" />
     <ClInclude Include="include\omicron.hpp" />
     <ClInclude Include="include\scene.hpp" />
     <ClInclude Include="include\splash_scene.hpp" />
-    <ClInclude Include="include\sprite.hpp" />
+    <ClInclude Include="include\mesh.hpp" />
     <ClInclude Include="include\texture.hpp" />
     <ClInclude Include="include\texture_manager.hpp" />
+    <ClInclude Include="include\texture_region.hpp" />
+    <ClInclude Include="include\mesh_helpers.hpp" />
     <ClInclude Include="include\window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\game_scene.cpp" />
+    <ClCompile Include="src\mesh_helpers.cpp" />
+    <ClCompile Include="src\mesh_manager.cpp" />
     <ClCompile Include="src\omicron.cpp" />
-    <ClCompile Include="src\scene.cpp" />
+    <ClCompile Include="src\pugi.cpp" />
     <ClCompile Include="src\splash_scene.cpp" />
-    <ClCompile Include="src\sprite.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\stbi.c" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\texture_manager.cpp" />
     <ClCompile Include="src\window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\petme128.atlas" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

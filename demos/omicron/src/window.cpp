@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include <be/core/logging.hpp>
 
 namespace o {
 namespace {
@@ -19,7 +20,6 @@ void mouse_handler(GLFWwindow* wnd, double x, double y) {
    Scene* scene = static_cast< Scene* >(glfwGetWindowUserPointer(wnd));
    if (!scene) return;
    vec2 pos(( F32 ) x, ( F32 ) y);
-   // TODO normalize with window size
    scene->mouse_move(pos);
 }
 
@@ -39,6 +39,16 @@ void mouse_btn_handler(GLFWwindow* wnd, int button, int action, int modifiers) {
    } else if (action == GLFW_RELEASE) {
       scene->mouse_up(( I8 ) button);
    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void GLAPIENTRY gl_debug_handler(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const char* message, const void* userParam) {
+   be_warn("OpenGL") << S(message)
+      & attr("Source") << ( U32 ) source
+      & attr("Type") << ( U32 ) type
+      & attr("ID") << ( U32 ) id
+      & attr("Severity") << ( U32 ) severity
+      | default_log();
 }
 
 } // o::()
@@ -117,6 +127,21 @@ void Window::create() {
    glfwSetMouseButtonCallback(glfw_, mouse_btn_handler);
    glfwSetScrollCallback(glfw_, mouse_wheel_handler);
    glfwSetCursorPosCallback(glfw_, mouse_handler);
+
+   if (GLEW_KHR_debug) {
+#ifdef BE_DEBUG
+      glEnable(GL_DEBUG_OUTPUT);
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+#endif
+      glDebugMessageCallback(gl_debug_handler, nullptr);
+      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+   } else if (GLEW_ARB_debug_output) {
+#ifdef BE_DEBUG
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
+#endif
+      glDebugMessageCallbackARB(gl_debug_handler, nullptr);
+      glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -127,6 +152,13 @@ void Window::show() {
 //////////////////////////////////////////////////////////////////////////////
 void Window::hide() {
    glfwHideWindow(glfw_);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+ivec2 Window::dim() const {
+   ivec2 dim;
+   glfwGetWindowSize(glfw_, &dim.x, &dim.y);
+   return dim;
 }
 
 //////////////////////////////////////////////////////////////////////////////

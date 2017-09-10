@@ -22,7 +22,7 @@ void TextureManager::init_default_() {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-const Texture& TextureManager::get(Id id) {
+Texture& TextureManager::get(Id id) {
    auto it = textures_.find(id);
    if (it != textures_.end()) {
       return it->second;

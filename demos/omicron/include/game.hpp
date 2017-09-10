@@ -40,6 +40,7 @@ private:
    std::unique_ptr<Scene> scene_;
    F64 prev_update_time_;
    F64 update_time_;
+   bool new_game_scene_;
 
    static constexpr F64 fixed_update_rate_ = 1 / 32.f;
    static constexpr F64 timer_reset_interval_ = 60.f;

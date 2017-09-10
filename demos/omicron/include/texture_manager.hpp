@@ -26,7 +26,7 @@ class TextureManager final {
 public:
    void clear();
    void add(Id id, Texture texture);
-   const Texture& get(Id id);
+   Texture& get(Id id);
 
 private:
    void init_default_();

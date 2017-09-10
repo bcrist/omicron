@@ -5,6 +5,7 @@ namespace o {
 
 GLuint GlTexture::bound_id_ = 0;
 bool GlTexture::tex_enabled_ = false;
+const TextureRegion Texture::empty_;
 
 //////////////////////////////////////////////////////////////////////////////
 GlTexture::GlTexture() noexcept
@@ -56,6 +57,14 @@ void GlTexture::bind() const noexcept {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+void GlTexture::bind(GLuint id) noexcept {
+   if (bound_id_ != id) {
+      glBindTexture(GL_TEXTURE_2D, id);
+      bound_id_ = id;
+   }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 void GlTexture::unbind() noexcept {
    if (bound_id_ != 0) {
       glBindTexture(GL_TEXTURE_2D, 0);
@@ -67,7 +76,16 @@ void GlTexture::unbind() noexcept {
 void GlTexture::enable() const noexcept {
    bind();
    if (!tex_enabled_) {
-      glEnable(GL_TEXTURE);
+      glEnable(GL_TEXTURE_2D);
+      tex_enabled_ = true;
+   }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void GlTexture::enable(GLuint id) noexcept {
+   bind(id);
+   if (!tex_enabled_) {
+      glEnable(GL_TEXTURE_2D);
       tex_enabled_ = true;
    }
 }
@@ -75,7 +93,8 @@ void GlTexture::enable() const noexcept {
 //////////////////////////////////////////////////////////////////////////////
 void GlTexture::disable() noexcept {
    if (tex_enabled_) {
-      glDisable(GL_TEXTURE);
+      glDisable(GL_TEXTURE_2D);
+      tex_enabled_ = false;
    }
 }
 
@@ -110,12 +129,14 @@ void GlTexture::upload(const Buf<const UC>& data, ivec2 dim, int comps) const no
          assert(false);
    }
 
-   glTexImage2D(GL_TEXTURE_2D, 0, internal_format, dim.x, dim.y, 0, format, GL_UNSIGNED_BYTE, data.get());
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+   glTexImage2D(GL_TEXTURE_2D, 0, internal_format, dim.x, dim.y, 0, format, GL_UNSIGNED_BYTE, data.get());
    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 }
 

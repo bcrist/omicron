@@ -14,12 +14,14 @@ public:
 
    virtual const char* name() const = 0;
 
+   virtual void init() = 0;
+
    virtual void key_down(I16 key) = 0;
    virtual void key_up(I16 key) = 0;
 
    virtual void mouse_down(I8 btn) = 0;
    virtual void mouse_up(I8 btn) = 0;
-   virtual void mouse_move(vec2 norm_pos) = 0;
+   virtual void mouse_move(vec2 pos) = 0;
    virtual void mouse_wheel(I32 delta) = 0;
 
    virtual void update(F64 dt) = 0;

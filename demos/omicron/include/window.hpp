@@ -42,6 +42,8 @@ public:
    void show();
    void hide();
 
+   ivec2 dim() const;
+
    Scene* scene() const;
    void scene(Scene* scene);
 

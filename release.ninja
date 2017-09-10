@@ -1,4 +1,4 @@
-#!!--[[ bengine build script ]] include('build/configure', 'vc_win', 'release') !! 1983 ##
+#!!--[[ bengine build script ]] include('build/configure', 'vc_win', 'release') !! 2040 ##
 # ################# !! GENERATED CODE -- DO NOT MODIFY !! ################# ##
 ninja_required_version = 1.5
 
@@ -1949,18 +1949,75 @@ build project-wedo-release!: phony $stage_dir\wedo.exe
 build project-wedo!: phony project-wedo-release!
 build group-tools-misc-release!: phony project-idgen-release! project-sizeof-release! project-ccolor-release! project-wedo-release!
 build group-tools-misc!: phony project-idgen! project-sizeof! project-ccolor! project-wedo!
+build demos\omicron\include\ids.hpp: limp
+build demos\omicron\include\ids.hpp!: limpin demos\omicron\include\ids.hpp
+
+build $build_dir\release\omicron\src\game.obj: cl demos\omicron\src\game.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\game_scene.obj: cl demos\omicron\src\game_scene.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\mesh.obj: cl demos\omicron\src\mesh.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\mesh_helpers.obj: cl demos\omicron\src\mesh_helpers.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\mesh_manager.obj: cl demos\omicron\src\mesh_manager.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
 
 build $build_dir\release\omicron\src\omicron.obj: cl demos\omicron\src\omicron.cpp || init!
    flags = $cl_flags_release
    pdb = $build_dir\omicron.pdb
-   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"include"
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\pugi.obj: cl demos\omicron\src\pugi.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\splash_scene.obj: cl demos\omicron\src\splash_scene.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\stbi.obj: cl demos\omicron\src\stbi.c || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\texture.obj: cl demos\omicron\src\texture.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\texture_manager.obj: cl demos\omicron\src\texture_manager.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
+
+build $build_dir\release\omicron\src\window.obj: cl demos\omicron\src\window.cpp || init!
+   flags = $cl_flags_release
+   pdb = $build_dir\omicron.pdb
+   extra = /DBE_ID_NAMES_ENABLED /DBE_TARGET=omicron /DBE_TARGET_BASE=omicron /DGLEW_NO_GLU /DGLEW_STATIC /DZLIB_CONST /DZ_SOLO /I"demos\omicron\include" /I"include"
 
 build $build_dir\omicron.icon.rc: putfile | icon\bengine.ico || init!
    contents = 101 ICON ^"icon^\^\bengine.ico^"&echo:$
 GLFW_ICON ICON ^"icon^\^\bengine.ico^"
 build $build_dir\omicron.icon.res: rc $build_dir\omicron.icon.rc || init!
 
-build $out_dir\omicron.exe: link $ext_lib_dir\glew.lib $ext_lib_dir\glfw.lib $ext_lib_dir\zlib-static.lib $out_dir\core-id-with-names.lib $out_dir\core.lib $out_dir\platform.lib $out_dir\util-compression.lib $out_dir\util-fs.lib $out_dir\util-prng.lib $build_dir\release\omicron\src\omicron.obj $build_dir\omicron.icon.res $build_dir\default.manifest.res || init!
+build $out_dir\omicron.exe: link $ext_lib_dir\glew.lib $ext_lib_dir\glfw.lib $ext_lib_dir\zlib-static.lib $out_dir\cli.lib $out_dir\core-id-with-names.lib $out_dir\core.lib $out_dir\ctable.lib $out_dir\platform.lib $out_dir\util-compression.lib $out_dir\util-fs.lib $out_dir\util-prng.lib $out_dir\util.lib $build_dir\release\omicron\src\game.obj $build_dir\release\omicron\src\game_scene.obj $build_dir\release\omicron\src\mesh.obj $build_dir\release\omicron\src\mesh_helpers.obj $build_dir\release\omicron\src\mesh_manager.obj $build_dir\release\omicron\src\omicron.obj $build_dir\release\omicron\src\pugi.obj $build_dir\release\omicron\src\splash_scene.obj $build_dir\release\omicron\src\stbi.obj $build_dir\release\omicron\src\texture.obj $build_dir\release\omicron\src\texture_manager.obj $build_dir\release\omicron\src\window.obj $build_dir\omicron.icon.res $build_dir\default.manifest.res || init!
    out_file = omicron.exe
    pdb = $out_dir\omicron.pdb
    flags = $link_flags_console_release
@@ -1973,7 +2030,7 @@ build group-omicron!: phony project-omicron!
 build all-release!: phony group-deps-release! group-belua-release! group-blt-release! group-cli-release! group-core-release! group-ctable-release! group-perf-release! group-platform-release! group-sqlite-release! group-testing-release! group-util-release! group-bltc-release! group-limp-release! group-tools-misc-release! group-omicron-release!
 build all!: phony group-deps! group-belua! group-blt! group-cli! group-core! group-ctable! group-perf! group-platform! group-sqlite! group-testing! group-util! group-bltc! group-limp! group-tools-misc! group-omicron!
 build externals!: phony $ext_lib_dir\zlib-static.lib $ext_lib_dir\glew.lib $ext_lib_dir\glfw.lib $ext_lib_dir\luaxx.lib
-build limp!: phony modules\belua\include\result_code.hpp! modules\belua\include\version.hpp! modules\belua\src\result_code.cpp! modules\blt\include\version.hpp! modules\blt\src-lua\lua_blt.cpp! modules\cli\include\section_ids.hpp! modules\cli\include\version.hpp! modules\core\include\log_attrib_ids.hpp! modules\core\include\service_ids.hpp! modules\core\include\version.hpp! modules\ctable\include\version.hpp! modules\perf\include\version.hpp! modules\platform\include\version.hpp! modules\sqlite\include\result_code.hpp! modules\sqlite\include\result_type.hpp! modules\sqlite\include\transaction_type.hpp! modules\sqlite\include\version.hpp! modules\sqlite\src\result_code.cpp! modules\sqlite\src\result_type.cpp! modules\sqlite\src\transaction_type.cpp! modules\testing\include\version.hpp! modules\util\include\parse_string_error_condition.hpp! modules\util\include\version.hpp! modules\util\include\zlib_result_code.hpp! modules\util\src-compression\zlib_result_code.cpp! modules\util\src-string\parse_string_error_condition.cpp! tools\bltc\include\version.hpp! tools\limp\include\limp_lua.hpp! tools\limp\include\version.hpp! tools\misc\src-idgen\format.cpp! tools\misc\src-idgen\mode.cpp! tools\misc\src-idgen\type.cpp! tools\misc\src-idgen\format.hpp! tools\misc\src-idgen\mode.hpp! tools\misc\src-idgen\type.hpp! tools\misc\src-idgen\version.hpp! tools\misc\src-sizeof\version.hpp! tools\misc\src-ccolor\version.hpp!
+build limp!: phony modules\belua\include\result_code.hpp! modules\belua\include\version.hpp! modules\belua\src\result_code.cpp! modules\blt\include\version.hpp! modules\blt\src-lua\lua_blt.cpp! modules\cli\include\section_ids.hpp! modules\cli\include\version.hpp! modules\core\include\log_attrib_ids.hpp! modules\core\include\service_ids.hpp! modules\core\include\version.hpp! modules\ctable\include\version.hpp! modules\perf\include\version.hpp! modules\platform\include\version.hpp! modules\sqlite\include\result_code.hpp! modules\sqlite\include\result_type.hpp! modules\sqlite\include\transaction_type.hpp! modules\sqlite\include\version.hpp! modules\sqlite\src\result_code.cpp! modules\sqlite\src\result_type.cpp! modules\sqlite\src\transaction_type.cpp! modules\testing\include\version.hpp! modules\util\include\parse_string_error_condition.hpp! modules\util\include\version.hpp! modules\util\include\zlib_result_code.hpp! modules\util\src-compression\zlib_result_code.cpp! modules\util\src-string\parse_string_error_condition.cpp! tools\bltc\include\version.hpp! tools\limp\include\limp_lua.hpp! tools\limp\include\version.hpp! tools\misc\src-idgen\format.cpp! tools\misc\src-idgen\mode.cpp! tools\misc\src-idgen\type.cpp! tools\misc\src-idgen\format.hpp! tools\misc\src-idgen\mode.hpp! tools\misc\src-idgen\type.hpp! tools\misc\src-idgen\version.hpp! tools\misc\src-sizeof\version.hpp! tools\misc\src-ccolor\version.hpp! demos\omicron\include\ids.hpp!
 build run-perf-release!: phony run-project-core-perf-release! run-project-util-perf-release!
 build run-test-release!: phony run-project-core-test-release! run-project-ctable-test-release! run-project-sqlite-test-release! run-project-testing-test-release! run-project-util-test-release!
 build pdb!: phony

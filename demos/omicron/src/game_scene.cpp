@@ -3,6 +3,11 @@
 #include <be/core/service_helpers.hpp>
 #include <GL/glew.h>
 #include <be/platform/glfw.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include "texture_manager.hpp"
+#include <be/core/service_helpers.hpp>
 
 namespace o {
 
@@ -24,6 +29,10 @@ void GameScene::mouse_up(I8 btn) {
    if (state_ != state::fade_out_dead) {
       change_state_(state::fade_out_dead);
    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void GameScene::init() {
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -65,18 +74,42 @@ void GameScene::update(F64 dt) {
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::render(F64 dt, F64 f) {
-   F32 o = 1.f - ( F32 ) (last_curtain_opacity_ + f * (curtain_opacity_ - last_curtain_opacity_));
 
-   
+   glMatrixMode(GL_PROJECTION);
+   glm::mat4 proj = glm::ortho(0, 1, 0, 1);
+   glLoadMatrixf(glm::value_ptr(proj));
 
-   glBegin(GL_LINES);
-   glColor4f(1, 0, 0, o);      glVertex2f(1, 0);
-   glColor4f(0, 1, 0, o);      glVertex2f(0, 1);
-   glColor4f(0, 0, 1, o);      glVertex2f(0, 0);
-   glColor4f(1, 1, 1, o);      glVertex2f(1, 1);
-   glVertex2f(0, 0.5f);
-   glVertex2f(( F32 ) f, 0.5f);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+
+   const Texture& tex = service<TextureManager>().get(Id("splash"));
+   tex.gl().enable();
+
+   glBegin(GL_QUADS);
+
+   glColor4f(1, 1, 1, 1);
+   glTexCoord2f(0, 0); glVertex2f(0, 1);
+   glTexCoord2f(1, 0); glVertex2f(1, 1);
+   glTexCoord2f(1, 1); glVertex2f(1, 0);
+   glTexCoord2f(0, 1); glVertex2f(0, 0);
+
    glEnd();
+
+
+   GlTexture::disable();
+
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+
+   if (curtain_opacity_ > 0.f) {
+      glBegin(GL_QUADS);
+      glColor4f(0, 0, 0, last_curtain_opacity_ + ( F32 ) (f * (curtain_opacity_ - last_curtain_opacity_)));
+      glVertex2f(-1, -1);
+      glVertex2f(1, -1);
+      glVertex2f(1, 1);
+      glVertex2f(-1, 1);
+      glEnd();
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
