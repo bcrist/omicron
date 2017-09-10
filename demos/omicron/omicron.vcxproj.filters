@@ -63,6 +63,9 @@
     <ClInclude Include="include\mesh_helpers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\environment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\window.cpp">
@@ -101,9 +104,21 @@
     <ClCompile Include="src\mesh_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\environment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\petme128.atlas">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\logos1.atlas">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\logos2.atlas">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\stage\assets\tiles.atlas">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

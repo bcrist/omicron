@@ -9,6 +9,7 @@ demo 'omicron' {
           'platform',
           'core-id-with-names',
           'util-fs',
+          'util-prng',
           'cli',
           'glfw',
           'glew',

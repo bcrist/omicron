@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<font>
+  <common scaleW="256" scaleH="256"/>
+  <pages>
+    <page file="logos1.png" />
+  </pages>
+  <chars>
+    <char name="bengine" x="0" y="0" width="256" height="62" />
+	<char name="perblue" x="0" y="64" yoffset="-58" width="256" height="88" />
+  </chars>
+</font>

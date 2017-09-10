@@ -28,11 +28,21 @@ void SplashScene::init() {
    glm::mat4 proj = glm::ortho(-hdim.x, hdim.x, hdim.y, -hdim.y);
    glLoadMatrixf(glm::value_ptr(proj));
 
-   //Texture& logos = service<TextureManager>().get(Id("logos"));
+   Texture& logos1 = service<TextureManager>().get(Id("logos1"));
+   Texture& logos2 = service<TextureManager>().get(Id("logos2"));
    Texture& font = service<TextureManager>().get(Id("petme128_0"));
 
-   logos_ = mm_.obtain(3);
-   // TODO logos
+   logos1_ = mm_.obtain(2);
+   logos2_ = mm_.obtain(1);
+   logos1_.texture_glid(logos1.glid());
+   logos2_.texture_glid(logos2.glid());
+   Buf<Vertex> verts1 = logos1_.verts();
+   Buf<Vertex> verts2 = logos2_.verts();
+   update_verts(tmp_buf(verts1), logos1.region(Id("bengine")), vec2(-75, 0), 1.f);
+   update_verts(sub_buf(verts1, 4), logos1.region(Id("perblue")), vec2(240, 0), 1.f);
+   update_verts(tmp_buf(verts2), logos2.region(Id("mmm")), vec2(-320, 0), 1.f);
+   logos1_.size(8);
+   logos2_.size(4);
 
    title_ = mm_.obtain(8);
 
@@ -48,7 +58,7 @@ void SplashScene::key_up(I16 key) {
       change_state_(state::fade_out_logo);
       curtain_speed_ = fast_curtain_speed_;
    } else if (state_ < state::fade_out_title) {
-      change_state_(state::fade_out_logo);
+      change_state_(state::fade_out_title);
       curtain_speed_ = fast_curtain_speed_;
    }
 }
@@ -122,7 +132,8 @@ void SplashScene::update(F64 dt) {
    }
 
    
-   logos_.enabled(state_ < state::fade_in_title);
+   logos1_.enabled(state_ < state::fade_in_title);
+   logos2_.enabled(state_ < state::fade_in_title);
    title_.enabled(state_ >= state::fade_in_title);
 }
 
@@ -153,8 +164,6 @@ void SplashScene::render(F64 dt, F64 f) {
 
 //////////////////////////////////////////////////////////////////////////////
 void SplashScene::change_state_(state s) {
-   be_verbose() << "state: " << ( U32 ) (s) | default_log();
-
    state_ = s;
    state_time_ = 0;
 }

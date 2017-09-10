@@ -59,11 +59,11 @@ private:
    F32 curtain_opacity_;
    F32 curtain_speed_;
 
-   Mesh logos_;
+   Mesh logos1_;
+   Mesh logos2_;
 
    mat4 title_transform_;
    Mesh title_;
-   
 };
 
 } // o

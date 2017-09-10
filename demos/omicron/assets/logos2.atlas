@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<font>
+  <common scaleW="128" scaleH="128"/>
+  <pages>
+    <page file="logos2.png" />
+  </pages>
+  <chars>
+    <char name="mmm" x="0" y="0" width="128" height="128" />
+  </chars>
+</font>

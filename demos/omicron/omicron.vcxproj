@@ -43,6 +43,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
+    <ClInclude Include="include\environment.hpp" />
     <ClInclude Include="include\game.hpp" />
     <ClInclude Include="include\game_scene.hpp" />
     <ClInclude Include="include\ids.hpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="include\window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\environment.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\game_scene.cpp" />
     <ClCompile Include="src\mesh_helpers.cpp" />
@@ -72,6 +74,9 @@
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\stage\assets\tiles.atlas" />
+    <None Include="assets\logos1.atlas" />
+    <None Include="assets\logos2.atlas" />
     <None Include="assets\petme128.atlas" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

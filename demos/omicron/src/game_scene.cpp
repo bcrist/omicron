@@ -1,38 +1,95 @@
 #include "game_scene.hpp"
 #include "game.hpp"
+#include "window.hpp"
+#include "texture.hpp"
 #include <be/core/service_helpers.hpp>
 #include <GL/glew.h>
 #include <be/platform/glfw.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "texture_manager.hpp"
-#include <be/core/service_helpers.hpp>
-
 namespace o {
+namespace {
+
+constexpr const char* env_data =
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+"                                                  "
+;
+
+} // o::()
 
 //////////////////////////////////////////////////////////////////////////////
 GameScene::GameScene()
-   : curtain_opacity_(1.f) {
+   : curtain_opacity_(1.f),
+     env_(mm_, ivec2(50, 40), env_data) {
    change_state_(state::fade_in);
 }
 
 //////////////////////////////////////////////////////////////////////////////
+void GameScene::key_down(I16 key) {
+}
+
+//////////////////////////////////////////////////////////////////////////////
 void GameScene::key_up(I16 key) {
-   if (state_ != state::fade_out_dead) {
-      change_state_(state::fade_out_dead);
-   }
+   
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void GameScene::mouse_down(I8 btn) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::mouse_up(I8 btn) {
-   if (state_ != state::fade_out_dead) {
-      change_state_(state::fade_out_dead);
-   }
+   
 }
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::init() {
+   window_dim_ = vec2(service<Window>().dim());
+   vec2 world_dim = window_dim_ / 48.f;
+   vec2 hdim = world_dim * 0.5f;
+
+   glMatrixMode(GL_PROJECTION);
+   glm::mat4 proj = glm::ortho(-hdim.x, hdim.x, hdim.y, -hdim.y);
+   glLoadMatrixf(glm::value_ptr(proj));
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -47,17 +104,15 @@ void GameScene::update(F64 dt) {
             curtain_opacity_ -= ( F32 ) (curtain_speed_ * dt);
          }
          if (curtain_opacity_ <= 0.f) {
-            change_state_(state::wait);
+            change_state_(state::play);
          }
          break;
 
-      case state::wait:
-         if (state_time_ >= wait_duration_) {
-            change_state_(state::fade_out_dead);
-         }
+      case state::play:
+         // TODO if(player.dead()) { change_state_(state::fade_out); }
          break;
 
-      case state::fade_out_dead:
+      case state::fade_out:
          last_curtain_opacity_ = curtain_opacity_;
          if (curtain_opacity_ < 1.f) {
             curtain_opacity_ += ( F32 ) (curtain_speed_ * dt);
@@ -74,40 +129,25 @@ void GameScene::update(F64 dt) {
 
 //////////////////////////////////////////////////////////////////////////////
 void GameScene::render(F64 dt, F64 f) {
-
-   glMatrixMode(GL_PROJECTION);
-   glm::mat4 proj = glm::ortho(0, 1, 0, 1);
-   glLoadMatrixf(glm::value_ptr(proj));
-
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-
-   const Texture& tex = service<TextureManager>().get(Id("splash"));
-   tex.gl().enable();
-
-   glBegin(GL_QUADS);
-
-   glColor4f(1, 1, 1, 1);
-   glTexCoord2f(0, 0); glVertex2f(0, 1);
-   glTexCoord2f(1, 0); glVertex2f(1, 1);
-   glTexCoord2f(1, 1); glVertex2f(1, 0);
-   glTexCoord2f(0, 1); glVertex2f(0, 0);
-
-   glEnd();
-
-
-   GlTexture::disable();
-
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
+   mm_.render();
 
    if (curtain_opacity_ > 0.f) {
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+
+      glDisable(GL_DEPTH_TEST);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      GlTexture::disable();
+
+      vec2 hdim = window_dim_ * 0.5f;
+
       glBegin(GL_QUADS);
-      glColor4f(0, 0, 0, last_curtain_opacity_ + ( F32 ) (f * (curtain_opacity_ - last_curtain_opacity_)));
-      glVertex2f(-1, -1);
-      glVertex2f(1, -1);
-      glVertex2f(1, 1);
-      glVertex2f(-1, 1);
+      vec4 color(0, 0, 0, last_curtain_opacity_ + ( F32 ) (f * (curtain_opacity_ - last_curtain_opacity_)));
+      glColor4fv(glm::value_ptr(color));
+      glVertex2f(-hdim.x, hdim.y);
+      glVertex2f(hdim.x, hdim.y);
+      glVertex2f(hdim.x, -hdim.y);
+      glVertex2f(-hdim.x, -hdim.y);
       glEnd();
    }
 }

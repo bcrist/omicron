@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<font>
+  <common scaleW="256" scaleH="256"/>
+  <pages>
+    <page file="tiles.png" />
+  </pages>
+  <chars>
+    <char name="grass0" x="0" y="0" width="16" height="16" />
+	<char name="grass1" x="16" y="0" width="16" height="16" />
+	<char name="grass2" x="32" y="0" width="16" height="16" />
+	<char name="grass3" x="48" y="0" width="16" height="16" />
+	<char name="grass4" x="64" y="0" width="16" height="16" />
+	<char name="grass5" x="80" y="0" width="16" height="16" />
+	<char name="grass6" x="96" y="0" width="16" height="16" />
+	<char name="grass7" x="112" y="0" width="16" height="16" />
+
+	<char name="water0" x="128" y="0" width="16" height="16" />
+	<char name="water1" x="144" y="0" width="16" height="16" />
+	<char name="water2" x="160" y="0" width="16" height="16" />
+	<char name="water3" x="176" y="0" width="16" height="16" />
+	<char name="water4" x="192" y="0" width="16" height="16" />
+	<char name="water5" x="208" y="0" width="16" height="16" />
+	<char name="water6" x="224" y="0" width="16" height="16" />
+	<char name="water7" x="240" y="0" width="16" height="16" />
+
+	<char name="deepwater0" x="128" y="32" width="16" height="16" />
+	<char name="deepwater1" x="144" y="32" width="16" height="16" />
+	<char name="deepwater2" x="160" y="32" width="16" height="16" />
+	<char name="deepwater3" x="176" y="32" width="16" height="16" />
+	<char name="deepwater4" x="192" y="32" width="16" height="16" />
+	<char name="deepwater5" x="208" y="32" width="16" height="16" />
+	<char name="deepwater6" x="224" y="32" width="16" height="16" />
+	<char name="deepwater7" x="240" y="32" width="16" height="16" /> 
+
+	<char name="player1-l" x="64" y="112" width="16" height="16" />
+	<char name="player2-l" x="80" y="112" width="16" height="16" />
+	<char name="player3-l" x="96" y="112" width="16" height="16" />
+
+	<char name="player1-r" x="64" y="112" width="16" height="16" right="-x" />
+	<char name="player2-r" x="80" y="112" width="16" height="16" right="-x" />
+	<char name="player3-r" x="96" y="112" width="16" height="16" right="-x" />
+
+	<char name="enemy1-r" x="0"  y="112" width="16" height="16" />
+	<char name="enemy2-r" x="16" y="112" width="16" height="16" />
+	<char name="enemy3-r" x="32" y="112" width="16" height="16" />
+	<char name="enemy4-r" x="48" y="112" width="16" height="16" />
+
+	<char name="enemy1-l" x="0"  y="128" width="16" height="16" />
+	<char name="enemy2-l" x="16" y="128" width="16" height="16" />
+	<char name="enemy3-l" x="32" y="128" width="16" height="16" />
+	<char name="enemy4-l" x="48" y="128" width="16" height="16" />
+
+	<char name="enemy1-d" x="0"  y="144" width="16" height="16" />
+	<char name="enemy2-d" x="16" y="144" width="16" height="16" />
+	<char name="enemy3-d" x="32" y="144" width="16" height="16" />
+	<char name="enemy4-d" x="48" y="144" width="16" height="16" />
+
+	<char name="enemy1-u" x="0"  y="160" width="16" height="16" />
+	<char name="enemy2-u" x="16" y="160" width="16" height="16" />
+	<char name="enemy3-u" x="32" y="160" width="16" height="16" />
+	<char name="enemy4-u" x="48" y="160" width="16" height="16" />
+
+  </chars>
+</font>
