@@ -117,6 +117,8 @@ void Player::build_hp_mesh_() {
 
    text_mesh_append(hp_mesh_, *font_, "\xff", RGBA(255, 0, 0, 255), screen_size_ * -0.0f, 1/16.f);
    text_mesh_append(hp_mesh_, *font_, hp_str, RGBA(255), screen_size_ * -0.0f + vec2(1, 0));
+
+   //hp_mesh_.debug(true);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -136,8 +138,6 @@ void Player::update_avatar_mesh_() {
       }
    }
    update_verts(avatar_mesh_.verts(), region, vec2(), 1/16.f);
-
-
 }
 
 } // o

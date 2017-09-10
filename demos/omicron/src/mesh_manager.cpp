@@ -2,8 +2,11 @@
 #include "texture.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
+#include <be/core/logging.hpp>
 
 namespace o {
+
+using namespace be;
 
 //////////////////////////////////////////////////////////////////////////////
 MeshManager::MeshManager()
@@ -141,6 +144,7 @@ void MeshManager::render() {
          glColor4ubv(glm::value_ptr(it->color));
          glTexCoord2fv(glm::value_ptr(it->tc));
          glVertex3fv(glm::value_ptr(it->pos));
+
          ++it;
       } else for (U32 i = 0, n = data.size; i < n; ++i) {
          glColor4ubv(glm::value_ptr(it->color));
@@ -148,6 +152,18 @@ void MeshManager::render() {
          ++it;
       }
       glEnd();
+      if (data.debug) {
+         Vertex* it2 = data.verts.get();
+         for (U32 i = 0, n = data.size; i < n; ++i) {
+            be_short_debug()
+               << "C: " << (U32)it2->color.r << "," << (U32)it2->color.g << "," << (U32)it2->color.b << "," << (U32)it2->color.a
+               << "\tT: " << it2->tc.x << "," << it2->tc.y
+               << "\tP: " << it2->pos.x << "," << it2->pos.y << "," << it2->pos.z
+               | default_log();
+            
+            ++it2;
+         }
+      }
    }
 }
 

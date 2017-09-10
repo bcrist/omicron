@@ -29,6 +29,7 @@ struct MeshData {
    U32 size = 0;
    Buf<Vertex> verts;
    bool enabled = false;
+   bool debug = false;
    bool same_as_last_;
 };
 
@@ -49,6 +50,9 @@ public:
 
    bool enabled() const;
    void enabled(bool enable);
+
+   bool debug() const;
+   void debug(bool debug);
 
    I16 layer() const;
    void layer(I16 l);
