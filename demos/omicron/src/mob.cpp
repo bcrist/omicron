@@ -32,7 +32,7 @@ Mob::Mob(MeshManager& mm) {
    variant_ = ( char ) dist(rnd);
 
    switch (variant_) {
-      case '1':
+      case '4':
          move_speed_ = 1.5f;
          hp_ = 2;
          break;
@@ -44,7 +44,7 @@ Mob::Mob(MeshManager& mm) {
          move_speed_ = 0.25f;
          hp_ = 10;
          break;
-      case '4':
+      case '1':
          move_speed_ = 0.25f;
          hp_ = 5;
          break;
@@ -55,7 +55,7 @@ Mob::Mob(MeshManager& mm) {
 
 //////////////////////////////////////////////////////////////////////////////
 void Mob::mobs_left(U32 count, U32 total) {
-   if (variant_ == '4') {
+   if (variant_ == '1') {
       move_speed_ = 0.25f + (total - count) * 4.f / total;
    }
 }
