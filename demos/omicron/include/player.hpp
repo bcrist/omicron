@@ -23,14 +23,36 @@ public:
       }
    }
 
+   bool blocking() const {
+      return blocking_;
+   }
+
    void block(bool b) {
       blocking_ = b;
+   }
+
+   bool attacking() const {
+      return attack_time_remaining_ > 0;
    }
 
    void attack() {
       if (attack_time_remaining_ <= 0) {
          attack_time_remaining_ = attack_time_;
       }
+   }
+
+   vec2 pos() const {
+      return position_;
+   }
+
+   void pos(vec2 new_pos);
+
+   bool facing_left() const {
+      return facing_left_;
+   }
+
+   vec2 movement_intention() const {
+      return movement_intention_;
    }
 
    void signal_movement(vec2 direction) {
@@ -44,8 +66,8 @@ private:
    void update_avatar_mesh_();
 
    static constexpr F32 attack_time_ = 0.1f;
-   static constexpr F32 walk_time_ = 0.2f;
-   static constexpr F32 move_speed_ = 1.f;
+   static constexpr F32 walk_time_ = 0.15f;
+   static constexpr F32 move_speed_ = 2.5f;
 
    I32 hp_;
    vec2 position_;

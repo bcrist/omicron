@@ -124,10 +124,10 @@ std::pair<rect, rect> text_mesh_append(Mesh& mesh, const Texture& tex, const S& 
    em_box_bounds.offset = offset;
 
    if (!text.empty()) {
-      std::size_t vi = 4 * mesh.size();
+      std::size_t vi = mesh.size();
       vec3 baked_offset = vec3(offset, depth);
       for (auto c : text) {
-         TextureRegion region = tex.region(Id((U64)c));
+         TextureRegion region = tex.region(Id(( U8 ) c));
          update_verts(sub_buf(verts, vi), region, baked_offset, scale, color, depth);
          baked_offset += vec3(scale * region.advance, 0);
 

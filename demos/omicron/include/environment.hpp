@@ -7,6 +7,7 @@
 
 namespace o {
 
+//////////////////////////////////////////////////////////////////////////////
 class Environment final : Immovable {
 public:
    Environment(MeshManager& mm, ivec2 dim, const S& data);

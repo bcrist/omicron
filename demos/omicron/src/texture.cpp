@@ -110,8 +110,8 @@ void GlTexture::upload(const Buf<const UC>& data, ivec2 dim, int comps) const no
    GLenum format = 0;
    switch (comps) {
       case 1:
-         internal_format = GL_LUMINANCE8;
-         format = GL_LUMINANCE;
+         internal_format = GL_ALPHA8;
+         format = GL_ALPHA;
          break;
       case 2:
          internal_format = GL_LUMINANCE8_ALPHA8;

@@ -10,7 +10,7 @@ namespace o {
 
 //////////////////////////////////////////////////////////////////////////////
 Player::Player(MeshManager& mm, vec2 screen_size)
-   : hp_(24),
+   : hp_(10),
      screen_size_(screen_size) {
    auto& tm = service<TextureManager>();
    auto& tiles = tm.get(Id("tiles"));
@@ -38,6 +38,12 @@ Player::Player(MeshManager& mm, vec2 screen_size)
 
    build_hp_mesh_();
    update_avatar_mesh_();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void Player::pos(vec2 new_pos) {
+   position_ = new_pos;
+   avatar_transform_ = glm::translate(mat4(), vec3(position_, 0));
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -94,7 +100,7 @@ void Player::update(F64 dt) {
    }
 
    if (dirty) {
-      be_info() << "Player Mesh Change"
+      be_verbose() << "Player Mesh Change"
          & attr("movement_intention") << movement_intention_.x << ", " << movement_intention_.y
          & attr("position") << position_.x << ", " << position_.y
          & attr("blocking") << (blocking_ ? "yes" : "no")
@@ -115,8 +121,8 @@ void Player::build_hp_mesh_() {
    oss << hp_;
    S hp_str = oss.str();
 
-   text_mesh_append(hp_mesh_, *font_, "\xff", RGBA(255, 0, 0, 255), screen_size_ * -0.0f, 1/16.f);
-   text_mesh_append(hp_mesh_, *font_, hp_str, RGBA(255), screen_size_ * -0.0f + vec2(1, 0));
+   text_mesh_append(hp_mesh_, *font_, "\xff", RGBA(255, 0, 0, 255), screen_size_ * -0.5f + vec2(1, 1), 1/6.f);
+   text_mesh_append(hp_mesh_, *font_, hp_str, RGBA(255), screen_size_ * -0.5f + vec2(2.75f, 1.1f), 1/8.f);
 
    //hp_mesh_.debug(true);
 }

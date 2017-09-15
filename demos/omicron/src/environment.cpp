@@ -8,6 +8,7 @@
 
 namespace o {
 
+//////////////////////////////////////////////////////////////////////////////
 Environment::Environment(MeshManager& mm, ivec2 dim, const S& data) {
    assert(data.size() >= dim.x * dim.y);
    mesh_ = mm.obtain(dim.x * dim.y);

@@ -6,6 +6,7 @@
 #include "mesh_manager.hpp"
 #include "environment.hpp"
 #include "player.hpp"
+#include "mob.hpp"
 
 namespace o {
 
@@ -55,7 +56,18 @@ private:
 
    Environment env_;
 
+   static constexpr I32 enemy_count = 100;
+
+   static constexpr F32 player_attack_dst = 0.8f;
+   static constexpr F32 player_knockback_power = 0.5f;
+   static constexpr F32 player_facing_attack_offset = 0.2f;
+   static constexpr F32 player_movement_attack_offset = 0.3f;
+
+   static constexpr F32 enemy_attack_dst = 0.4f;
+   static constexpr F32 enemy_knockback_power = 0.75f;
+
    Player player_;
+   std::vector<std::unique_ptr<Mob>> mobs_;
    
 };
 
